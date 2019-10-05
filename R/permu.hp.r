@@ -3,7 +3,7 @@
 #' This function performs permutation test for the individual explain percentage of each environmental variable for Redundancy Analysis and Canonical Correspondence Analysis,
 #' applying the hierarchy algorithm of Chevan and Sutherland (1991) .
 #' 
-#' @param  Y Community data matrix.
+#' @param  Y Community data matrix for RDA and CCA,or a vector for general linear regression model.
 #' @param  X Constraining matrix less than 12 columns, typically of environmental variables.
 #' @param  type the Constrained ordination: RDA or CCA, default "RDA"
 #' @param  permutations the number of permutations required
@@ -25,6 +25,7 @@
 permu.hp=function(Y,X,type="RDA",permutations=999)
 {require(permute)
 obs=rdacca.hp(Y,X,type=type,pieplot ="")
+Y=data.frame(Y)
 n=dim(Y)[1]
 r2q=obs$hp.R2
 ar2q=obs$hp.adjR2
@@ -40,8 +41,7 @@ Signi=function(x)
 
 p.R2=apply(r2q,1,Signi)
 p.adjR2=apply(ar2q,1,Signi)
-return(list(R2=data.frame(R2=round(obs$hp.R2,3),Pr=p.R2),adjR2=data.frame(adjR2=round(obs$hp.adjR2,3),Pr=p.adjR2)))
+return(list(R2=data.frame(R2=obs$hp.R2,Pr=p.R2),adjR2=data.frame(adjR2=obs$hp.adjR2,Pr=p.adjR2)))
 }
-
 
 
