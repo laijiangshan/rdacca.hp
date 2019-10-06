@@ -42,6 +42,6 @@ Signi=function(x)
 
 p.R2=apply(r2q,1,Signi)
 p.adjR2=apply(ar2q,1,Signi)
-return(list(R2=data.frame(R2=obs$hp.R2,Pr=p.R2),adjR2=data.frame(adjR2=obs$hp.adjR2,Pr=p.adjR2)))
+return(list(R2=obs$R2,hp.R2=data.frame(obs$hp.R2,Pr=p.R2),adj.R2=obs$adj.R2,hp.adjR2=data.frame(adjR2=obs$hp.adjR2,Pr=p.adjR2)))
 }
 
