@@ -72,4 +72,4 @@ rdacca.hp=function (Y, X,type="RDA", pieplot = "tv")
          list(R2=rsq$r.squared, hp.R2 =HP$IJ["I"],adj.R2=rsq$adj.r.squared,hp.adjR2=HPa$IJ["I"])
     }
 }
-rdacca.hp(varespec,varechem[,c("Al","P","K")],pieplot = "tev",type="RDA")
+
