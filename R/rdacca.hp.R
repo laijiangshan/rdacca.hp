@@ -37,14 +37,12 @@ rdacca.hp=function (Y, X,type="RDA", pieplot = "tv")
         HP <- partition.rda(gfs, Env.num, var.names = names(data.frame(X)))
         gfsa <- hpmodel$gfsa
         HPa <- partition.rda(gfsa, Env.num, var.names = names(data.frame(X)))
-       par(mfrow=c(1,2))
-	   par(mar=c(0.2,0.2,3,0.8))
-	   if(type=="RDA")
-            rsq <- RsquareAdj(rda(Y~., data = X))
-       if(type=="CCA")
-             rsq <- RsquareAdj(cca(Y~., data = X))
+       
+	   
 	   if (pieplot=="tv") {
-           lbls<- c("unexplained",row.names(HP$I.perc)) 
+           par(mfrow=c(1,2))
+	       par(mar=c(0.2,0.2,3,0.8)) 
+		   lbls<- c("unexplained",row.names(HP$I.perc)) 
 		   pct <- round(c(1-sum(HP$IJ$I),HP$IJ$I)*100,1)
            lbls <- paste(lbls, pct) # add percents to labels
            lbls <- paste(lbls,"%",sep="") # ad % to labels
@@ -57,19 +55,20 @@ rdacca.hp=function (Y, X,type="RDA", pieplot = "tv")
           
 		}
 		if (pieplot=="tev") {
+		   par(mfrow=c(1,2))
+	       par(mar=c(0.2,0.2,3,0.8)) 
            lbls<- row.names(HP$I.perc) 
 		   pct <- round(HP$I.perc$I,1)
            lbls <- paste(lbls, pct) # add percents to labels
            lbls <- paste(lbls,"%",sep="") # ad % to labels
-           pie(pct,labels = lbls,col=rainbow(length(lbls)), main="Total explained variation\n (R2)")
+           pie(pct,labels = lbls,col=rainbow(length(lbls)), main="% on Total explained variation\n (R2)")
            lblsa<- row.names(HPa$I.perc) 
 		   pcta <- round(HPa$I.perc$I,1)
            lblsa <- paste(lblsa, pcta) # add percents to labels
            lblsa <- paste(lblsa,"%",sep="") # ad % to labels
-		 pie(pcta,labels = lblsa,col=rainbow(length(lblsa)), main="Total explained variation\n (adj.R2)")
+		 pie(pcta,labels = lblsa,col=rainbow(length(lblsa)), main="% on Total explained variation\n (adj.R2)")
 		}
 		
-         list(R2=rsq$r.squared, hp.R2 =HP$IJ["I"],adj.R2=rsq$adj.r.squared,hp.adjR2=HPa$IJ["I"])
+         list(R2=sum(HP$IJ[,"I"]), hp.R2 =HP$IJ["I"],adj.R2=sum(HPa$IJ[,"I"]),hp.adjR2=HPa$IJ["I"])
     }
 }
-
