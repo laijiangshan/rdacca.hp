@@ -31,7 +31,8 @@ r2q=obs$hp.R2
 ar2q=obs$hp.adjR2
 for(i in 1:permutations)
 {newy=Y[shuffle(n),]
- simu=rdacca.hp(newy,X,type=type,pieplot ="")
+ newx=X[shuffle(n),]
+ simu=rdacca.hp(newy,newx,type=type,pieplot ="")
  r2q=cbind(r2q,simu$hp.R2)
  ar2q=cbind(ar2q,simu$hp.adjR2)
 }
@@ -43,5 +44,4 @@ p.R2=apply(r2q,1,Signi)
 p.adjR2=apply(ar2q,1,Signi)
 return(list(R2=data.frame(R2=obs$hp.R2,Pr=p.R2),adjR2=data.frame(adjR2=obs$hp.adjR2,Pr=p.adjR2)))
 }
-
 

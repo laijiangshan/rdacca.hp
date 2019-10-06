@@ -13,13 +13,15 @@ allR2=function (Y,X,type)
     n <- (2^Env.num) - 1
     combs <- hpmatrix(Env.num)
     gfs <- 0
-
+    gfsa<- 0
     for (i in 1:n) {
         current.comb <- as.vector(combs[i, ][combs[i, ] > 0])
         combn <- paste(names(data.frame(X)[current.comb]),
             "", collapse = "")
-        new.line <- R2current(Y, current.comb, X,type)
-        gfs <- c(gfs, new.line)
+        new.line <- R2current(Y,current.comb,X,type)
+        gfs <- c(gfs, new.line$r.squared)
+		gfsa <- c(gfsa, new.line$adj.r.squared)
     }
-    gfs
+    list(gfs=gfs,gfsa=gfsa)
 }
+
