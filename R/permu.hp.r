@@ -1,6 +1,6 @@
 #'Permutation Test for Hierarchical Partitioning for Redundancy Analysis and Canonical Correspondence Analysis 
 #'
-#' This function performs permutation test for the individual explain percentage of each environmental variable for Redundancy Analysis and Canonical Correspondence Analysis,
+#' This function performs permutation test for the individual contribution of each environmental variable for Redundancy Analysis and Canonical Correspondence Analysis,
 #' applying the hierarchy algorithm of Chevan and Sutherland (1991) .
 #' 
 #' @param  Y Community data matrix for RDA and CCA,or a vector for general linear regression model.
@@ -8,11 +8,15 @@
 #' @param  type the Constrained ordination: RDA or CCA, default "RDA"
 #' @param  permutations the number of permutations required
 #' @return a list containing
-#' @return \item{R2}{a dataframe for unadjusted R-squared for individual environmental variables and p-value.}
-#' @return \item{adjR2}{a dataframe for adjusted R-squared for individual environmental variables and p-value.}
-#' @author {Jiangshan Lai} \email{lai@ibcas.ac.cn}
+#' @return \item{R2}{unadjusted R-squared for RDA or CCA  for overall model.}
+#' @return \item{hp.R2}{a dataframe for unadjusted R-squared for individual environmental variables and p-value.}
+#' @return \item{adj.R2}{adjusted R-squared for RDA or CCA for overall model.}
+#' @return \item{hp.adjR2}{a dataframe for adjusted R-squared for individual environmental variables and p-value.}
+
 #' @references
 #' Chevan, A. and Sutherland, M. 1991. Hierarchical Partitioning. The American Statistician 45:90~96
+#' Chris Walsh and Ralph Mac Nally 2013. hier.part: Hierarchical Partitioning. R package version 1.0-4.https://CRAN.R-project.org/package=hier.part
+
 #' @examples
 #'require(vegan)
 #'data(varespec)

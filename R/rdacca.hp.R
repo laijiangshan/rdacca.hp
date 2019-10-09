@@ -1,6 +1,6 @@
-#' Hierarchical Partitioning for Canonical Correspondence Analysis and Redundancy Analysis
+#' Hierarchical Partitioning for Redundancy Analysis and Canonical Correspondence Analysis
 #'
-#' This function calculates the individual explain percentage of each environmental variable for Canonical Correspondence Analysis and Redundancy Analysis,
+#' This function calculates the individual contribution of each environmental variable for Redundancy Analysis and Canonical Correspondence Analysis,
 #' applying the hierarchy algorithm of Chevan and Sutherland (1991) .
 #' 
 #'
@@ -8,14 +8,22 @@
 #' @param  X Constraining matrix less than 12 columns, typically of environmental variables.
 #' @param  type the Constrained ordination: RDA or CCA, default "RDA"
 #' @param  pieplot a pieplot each variable is plotted expressed as percentage of total variation (pieplot="tv") or total explained variation (pieplot="tev").
+#' @details This function calculates the individual contribution of each independent variable to goodness of fit measures on RDA and CCA,
+#' applying the hierarchy algorithm of Chevan and Sutherland (1991) .
+#' all combinations of N independent variable use the function allr2.
+#' It takes the list of goodness of fit measures and, using the partition function,to return a simple table listing each variable, its individuals contribution (I). 
+#' At this stage, the partition routine will not run for more than 12 independent variables. This function requires the vegan,hier.part package.
+
 #' @return a list containing
-#' @return \item{R2}{unadjusted R-squared for RDA or CCA with all environmental variables.}
+#' @return \item{R2}{unadjusted R-squared for RDA or CCA  for overall model.}
 #' @return \item{hp.R2}{the individual contribution for each variable (based on unadjusted R-squared).}
-#' @return \item{adj.R2}{adjusted R-squared for RDA or CCA with all environmental variables.}
+#' @return \item{adj.R2}{adjusted R-squared for RDA or CCA for overall model.}
 #' @return \item{hp.adjR2}{the individual contribution for each variable (based on adjusted R-squared).}
 #' @author {Jiangshan Lai} \email{lai@ibcas.ac.cn}
 #' @references
 #' Chevan, A. and Sutherland, M. 1991. Hierarchical Partitioning. The American Statistician 45:90~96
+#' Chris Walsh and Ralph Mac Nally 2013. hier.part: Hierarchical Partitioning. R package version 1.0-4.https://CRAN.R-project.org/package=hier.part
+
 #' @examples
 #'require(vegan)
 #'data(varespec)

@@ -7,7 +7,7 @@
 permu.hp(Y, X, type = "RDA", permutations = 999)
 }
 \arguments{
-\item{Y}{Community data matrix.}
+\item{Y}{Community data matrix for RDA and CCA,or a vector for general linear regression model.}
 
 \item{X}{Constraining matrix less than 12 columns, typically of environmental variables.}
 
@@ -18,12 +18,16 @@ permu.hp(Y, X, type = "RDA", permutations = 999)
 \value{
 a list containing
 
-\item{R2}{a dataframe for unadjusted R-squared for individual environmental variables and p-value.}
+\item{R2}{unadjusted R-squared for RDA or CCA  for overall model.}
 
-\item{adjR2}{a dataframe for adjusted R-squared for individual environmental variables and p-value.}
+\item{hp.R2}{a dataframe for unadjusted R-squared for individual environmental variables and p-value.}
+
+\item{adj.R2}{adjusted R-squared for RDA or CCA for overall model.}
+
+\item{hp.adjR2}{a dataframe for adjusted R-squared for individual environmental variables and p-value.}
 }
 \description{
-This function performs permutation test for the individual explain percentage of each environmental variable for Redundancy Analysis and Canonical Correspondence Analysis,
+This function performs permutation test for the individual contribution of each environmental variable for Redundancy Analysis and Canonical Correspondence Analysis,
 applying the hierarchy algorithm of Chevan and Sutherland (1991) .
 }
 \examples{
@@ -37,7 +41,5 @@ permu.hp(varespec,varechem[,c("Al","P","K")],type="CCA",permutations=999)
 }
 \references{
 Chevan, A. and Sutherland, M. 1991. Hierarchical Partitioning. The American Statistician 45:90~96
-}
-\author{
-{Jiangshan Lai} \email{lai@ibcas.ac.cn}
+Chris Walsh and Ralph Mac Nally 2013. hier.part: Hierarchical Partitioning. R package version 1.0-4.https://CRAN.R-project.org/package=hier.part
 }

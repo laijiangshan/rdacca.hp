@@ -4,6 +4,6 @@ R2current=function(Y, current.comb, X,type)
 	if(type=="RDA")
     gf <- RsquareAdj(rda(Y~., data = data))
 	if(type=="CCA")
-	gf <- RsquareAdj(cca(Y~., data = data))
+	gf <- RsquareAdj(cca(Y~., data = data))$r.squared
     gf
 }

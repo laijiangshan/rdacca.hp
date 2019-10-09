@@ -2,7 +2,7 @@
 % Please edit documentation in R/rdacca.hp.R
 \name{rdacca.hp}
 \alias{rdacca.hp}
-\title{Hierarchical Partitioning for Canonical Correspondence Analysis and Redundancy Analysis}
+\title{Hierarchical Partitioning for Redundancy Analysis and Canonical Correspondence Analysis}
 \usage{
 rdacca.hp(Y, X, type = "RDA", pieplot = "tv")
 }
@@ -18,17 +18,24 @@ rdacca.hp(Y, X, type = "RDA", pieplot = "tv")
 \value{
 a list containing
 
-\item{R2}{unadjusted R-squared for RDA or CCA with all environmental variables.}
+\item{R2}{unadjusted R-squared for RDA or CCA  for overall model.}
 
 \item{hp.R2}{the individual contribution for each variable (based on unadjusted R-squared).}
 
-\item{adj.R2}{adjusted R-squared for RDA or CCA with all environmental variables.}
+\item{adj.R2}{adjusted R-squared for RDA or CCA for overall model.}
 
 \item{hp.adjR2}{the individual contribution for each variable (based on adjusted R-squared).}
 }
 \description{
-This function calculates the individual explain percentage of each environmental variable for Canonical Correspondence Analysis and Redundancy Analysis,
+This function calculates the individual contribution of each environmental variable for Redundancy Analysis and Canonical Correspondence Analysis,
 applying the hierarchy algorithm of Chevan and Sutherland (1991) .
+}
+\details{
+This function calculates the individual contribution of each independent variable to goodness of fit measures on RDA and CCA,
+applying the hierarchy algorithm of Chevan and Sutherland (1991) .
+all combinations of N independent variable use the function allr2.
+It takes the list of goodness of fit measures and, using the partition function,to return a simple table listing each variable, its individuals contribution (I). 
+At this stage, the partition routine will not run for more than 12 independent variables. This function requires the vegan,hier.part package.
 }
 \examples{
 require(vegan)
@@ -41,6 +48,7 @@ rdacca.hp(varespec,varechem[,c("Al","P","K")],pieplot = "tev",type="CCA")
 }
 \references{
 Chevan, A. and Sutherland, M. 1991. Hierarchical Partitioning. The American Statistician 45:90~96
+Chris Walsh and Ralph Mac Nally 2013. hier.part: Hierarchical Partitioning. R package version 1.0-4.https://CRAN.R-project.org/package=hier.part
 }
 \author{
 {Jiangshan Lai} \email{lai@ibcas.ac.cn}
