@@ -30,12 +30,17 @@ a list containing
 This function performs permutation test for the individual contribution of each environmental variable for Redundancy Analysis and Canonical Correspondence Analysis,
 applying the hierarchy algorithm of Chevan and Sutherland (1991) .
 }
+\details{
+This function perform significance test for individual R2 of each independent variable via random permutation of the
+rows of the Y data matrix. the test statistic is defined as individual R2. 
+At this stage, permu.hp  the defined permutation scheme
+}
 \examples{
 require(vegan)
 data(varespec)
 data(varechem)
-rdacca.hp(varespec,varechem[,c("Al","P","K")],pieplot = "tv",type="RDA")
-permu.hp(varespec,varechem[,c("Al","P","K")],type="RDA",permutations=999)
+rdacca.hp(varespec,varechem[,c("Al","K","N","Baresoil")],pieplot = "tv",type="RDA")
+permu.hp(varespec,varechem[,c("Al","K","N","Baresoil")],type="RDA",permutations=999)
 rdacca.hp(varespec,varechem[,c("Al","P","K")],pieplot = "tv",type="CCA")
 permu.hp(varespec,varechem[,c("Al","P","K")],type="CCA",permutations=999)
 }

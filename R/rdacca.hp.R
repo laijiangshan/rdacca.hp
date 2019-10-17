@@ -28,10 +28,20 @@
 #'require(vegan)
 #'data(varespec)
 #'data(varechem)
-#'rdacca.hp(varespec,varechem[,c("Al","P","K")],pieplot = "tv",type="RDA")
-#'rdacca.hp(varespec,varechem[,c("Al","P","K")],pieplot = "tev",type="RDA")
-#'rdacca.hp(varespec,varechem[,c("Al","P","K")],pieplot = "tv",type="CCA")
-#'rdacca.hp(varespec,varechem[,c("Al","P","K")],pieplot = "tev",type="CCA")
+#'#use ordiR2step choose a model by permutation tests in RDA
+#'mod0 <- rda(varespec ~ 1, varechem)  # Model with intercept only
+#'mod1 <- rda(varespec~ ., varechem)
+#'ordiR2step(mod0, mod1)
+#'#the retaining variables: Al,K,N,Baresoil
+#'rdacca.hp(varespec,varechem[,c("Al","K","N","Baresoil")],pieplot = "tv",type="RDA")
+#'rdacca.hp(varespec,varechem[,c("Al","K","N","Baresoil")],pieplot = "tev",type="RDA")
+#'#use ordiR2step choose a model by permutation tests in CCA
+#'mod0 <- cca(varespec ~ 1, varechem)  # Model with intercept only
+#'mod1 <- cca(varespec~ ., varechem)
+#'ordiR2step(mod0, mod1)
+#'#the retaining variables: K,Al,P
+#'rdacca.hp(varespec,varechem[,c("K","Al","P")],pieplot = "tv",type="CCA")
+#'rdacca.hp(varespec,varechem[,c("K","Al","P")],pieplot = "tev",type="CCA")
 
 
 rdacca.hp=function (Y, X,type="RDA", pieplot = "tv")
@@ -44,8 +54,10 @@ rdacca.hp=function (Y, X,type="RDA", pieplot = "tv")
         gfs <- hpmodel$gfs
         HP <- partition.rda(gfs, Env.num, var.names = names(data.frame(X)))
         gfsa <- hpmodel$gfsa
+		gfsa[gfsa<0]=0
         HPa <- partition.rda(gfsa, Env.num, var.names = names(data.frame(X)))
-       
+       HPa$IJ$I[HPa$IJ$I<0]=0
+	   HPa$I.perc[HPa$I.perc<0]=0
 	   
 	   if (pieplot=="tv") {
            par(mfrow=c(1,2))

@@ -7,6 +7,12 @@
 #' @param  X Constraining matrix less than 12 columns, typically of environmental variables.
 #' @param  type the Constrained ordination: RDA or CCA, default "RDA"
 #' @param  permutations the number of permutations required
+
+#' @details This function perform significance test for individual R2 of each independent variable via random permutation of the
+#' rows of the Y data matrix. the test statistic is defined as individual R2. 
+#' At this stage, permu.hp  the defined permutation scheme
+
+
 #' @return a list containing
 #' @return \item{R2}{unadjusted R-squared for RDA or CCA  for overall model.}
 #' @return \item{hp.R2}{a dataframe for unadjusted R-squared for individual environmental variables and p-value.}
@@ -21,8 +27,8 @@
 #'require(vegan)
 #'data(varespec)
 #'data(varechem)
-#'rdacca.hp(varespec,varechem[,c("Al","P","K")],pieplot = "tv",type="RDA")
-#'permu.hp(varespec,varechem[,c("Al","P","K")],type="RDA",permutations=999)
+#'rdacca.hp(varespec,varechem[,c("Al","K","N","Baresoil")],pieplot = "tv",type="RDA")
+#'permu.hp(varespec,varechem[,c("Al","K","N","Baresoil")],type="RDA",permutations=999)
 #'rdacca.hp(varespec,varechem[,c("Al","P","K")],pieplot = "tv",type="CCA")
 #'permu.hp(varespec,varechem[,c("Al","P","K")],type="CCA",permutations=999)
 
@@ -36,7 +42,7 @@ ar2q=obs$hp.adjR2
 for(i in 1:permutations)
 {newy=Y[shuffle(n),]
  newx=X[shuffle(n),]
- simu=rdacca.hp(newy,newx,type=type,pieplot ="")
+ simu=rdacca.hp(newy,X,type=type,pieplot ="")
  r2q=cbind(r2q,simu$hp.R2)
  ar2q=cbind(ar2q,simu$hp.adjR2)
 }

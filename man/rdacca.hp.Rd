@@ -41,10 +41,20 @@ At this stage, the partition routine will not run for more than 12 independent v
 require(vegan)
 data(varespec)
 data(varechem)
-rdacca.hp(varespec,varechem[,c("Al","P","K")],pieplot = "tv",type="RDA")
-rdacca.hp(varespec,varechem[,c("Al","P","K")],pieplot = "tev",type="RDA")
-rdacca.hp(varespec,varechem[,c("Al","P","K")],pieplot = "tv",type="CCA")
-rdacca.hp(varespec,varechem[,c("Al","P","K")],pieplot = "tev",type="CCA")
+#use ordiR2step choose a model by permutation tests in RDA
+mod0 <- rda(varespec ~ 1, varechem)  # Model with intercept only
+mod1 <- rda(varespec~ ., varechem)
+ordiR2step(mod0, mod1)
+#the retaining variables: Al,K,N,Baresoil
+rdacca.hp(varespec,varechem[,c("Al","K","N","Baresoil")],pieplot = "tv",type="RDA")
+rdacca.hp(varespec,varechem[,c("Al","K","N","Baresoil")],pieplot = "tev",type="RDA")
+#use ordiR2step choose a model by permutation tests in CCA
+mod0 <- cca(varespec ~ 1, varechem)  # Model with intercept only
+mod1 <- cca(varespec~ ., varechem)
+ordiR2step(mod0, mod1)
+#the retaining variables: K,Al,P
+rdacca.hp(varespec,varechem[,c("K","Al","P")],pieplot = "tv",type="CCA")
+rdacca.hp(varespec,varechem[,c("K","Al","P")],pieplot = "tev",type="CCA")
 }
 \references{
 Chevan, A. and Sutherland, M. 1991. Hierarchical Partitioning. The American Statistician 45:90~96
