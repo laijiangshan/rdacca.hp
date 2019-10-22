@@ -22,26 +22,55 @@
 #' @author {Jiangshan Lai} \email{lai@ibcas.ac.cn}
 #' @references
 #' Chevan, A. and Sutherland, M. 1991. Hierarchical Partitioning. The American Statistician 45:90~96
+
 #' Chris Walsh and Ralph Mac Nally 2013. hier.part: Hierarchical Partitioning. R package version 1.0-4.https://CRAN.R-project.org/package=hier.part
 
 #' @examples
-#'require(vegan)
-#'data(varespec)
-#'data(varechem)
-#'#use ordiR2step choose a model by permutation tests in RDA
-#'mod0 <- rda(varespec ~ 1, varechem)  # Model with intercept only
-#'mod1 <- rda(varespec~ ., varechem)
-#'ordiR2step(mod0, mod1)
-#'#the retaining variables: Al,K,N,Baresoil
-#'rdacca.hp(varespec,varechem[,c("Al","K","N","Baresoil")],pieplot = "tv",type="RDA")
-#'rdacca.hp(varespec,varechem[,c("Al","K","N","Baresoil")],pieplot = "tev",type="RDA")
-#'#use ordiR2step choose a model by permutation tests in CCA
-#'mod0 <- cca(varespec ~ 1, varechem)  # Model with intercept only
-#'mod1 <- cca(varespec~ ., varechem)
-#'ordiR2step(mod0, mod1)
-#'#the retaining variables: K,Al,P
-#'rdacca.hp(varespec,varechem[,c("K","Al","P")],pieplot = "tv",type="CCA")
-#'rdacca.hp(varespec,varechem[,c("K","Al","P")],pieplot = "tev",type="CCA")
+#'require(ade4)
+#'data(doubs)
+#'spe<-doubs$fish
+#'env<-doubs$env
+#'#Remove empty site 8
+#'spe<-spe[-8,]
+#'env<-env[-8,]
+#'#Remove the 'dfs' variable from the env data frame
+#'env <- env[, -1]
+#'# Hellinger-transform the species dataset
+#'spe.hel <- decostand(spe, "hellinger")
+#'#Forward selection for RDA using vegan's ordiR2step()
+#'mod0 <- rda(spe.hel~ 1, env)  # Model with intercept only
+#'mod1 <- rda(spe.hel~ ., env)
+#'ordiR2step(mod0, mod1,direction = "forward")
+#'#the remaining variables: alt,oxy,bdo
+#'rdacca.hp(spe.hel,env[,c("alt","oxy","bdo")],pieplot = "tv",type="RDA")
+#'rdacca.hp(spe.hel,env[,c("alt","oxy","bdo")],pieplot = "tev",type="RDA")
+#'#Forward selection for CCA using vegan's ordiR2step()
+#'mod0 <- cca(spe ~ 1, env)  # Model with intercept only
+#'mod1 <- cca(spe ~., env)
+#'ordiR2step(mod0, mod1,direction = "forward")
+#'#the remaining variables: alt, oxy,bdo
+#'rdacca.hp(spe,env[,c("alt","oxy","bdo")],pieplot = "tv",type="CCA")
+#'rdacca.hp(spe,env[,c("alt","oxy","bdo")],pieplot = "tev",type="CCA")
+
+#'data(mite)
+#'data(mite.env)
+#'mite.hel <- decostand(mite, "hellinger")
+#Forward selection using vegan's ordiR2step()
+#'mod0 <- rda(mite.hel ~ 1, mite.env)  # Model with intercept only
+#'mod1 <- rda(mite.hel~ ., mite.env)
+#'ordiR2step(mod0, mod1,direction = "forward")
+#'#the remaining variables: WatrCont,Shrub, Substrate,Topo
+#'rdacca.hp(mite.hel,mite.env[,-1],pieplot = "tv",type="RDA")
+#'rdacca.hp(mite.hel,mite.env[,-1],pieplot = "tev",type="RDA")
+
+#'#Forward selection using vegan's ordiR2step()
+#'mod0 <- cca(mite ~ 1, mite.env)  # Model with intercept only
+#'mod1 <- cca(mite ~., mite.env)
+#'ordiR2step(mod0, mod1,direction = "forward")
+#'#the remaining variables: WatrCont,SubsDens,Substrate,Topo
+#'rdacca.hp(mite,mite.env[,-4],pieplot = "tv",type="CCA")
+#'rdacca.hp(mite,mite.env[,-4],pieplot = "tev",type="CCA")
+
 
 
 rdacca.hp=function (Y, X,type="RDA", pieplot = "tv")

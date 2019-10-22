@@ -36,13 +36,43 @@ rows of the Y data matrix. the test statistic is defined as individual R2.
 At this stage, permu.hp  the defined permutation scheme
 }
 \examples{
-require(vegan)
-data(varespec)
-data(varechem)
-rdacca.hp(varespec,varechem[,c("Al","K","N","Baresoil")],pieplot = "tv",type="RDA")
-permu.hp(varespec,varechem[,c("Al","K","N","Baresoil")],type="RDA",permutations=999)
-rdacca.hp(varespec,varechem[,c("Al","P","K")],pieplot = "tv",type="CCA")
-permu.hp(varespec,varechem[,c("Al","P","K")],type="CCA",permutations=999)
+require(ade4)
+data(doubs)
+spe<-doubs$fish
+env<-doubs$env
+#Remove empty site 8
+spe<-spe[-8,]
+env<-env[-8,]
+#Remove the 'dfs' variable from the env data frame
+env <- env[, -1]
+# Hellinger-transform the species dataset
+spe.hel <- decostand(spe, "hellinger")
+#Forward selection for RDA using vegan's ordiR2step()
+mod0 <- rda(spe.hel~ 1, env)  # Model with intercept only
+mod1 <- rda(spe.hel~ ., env)
+ordiR2step(mod0, mod1,direction = "forward")
+#the remaining variables: alt,oxy,bdo
+permu.hp(spe.hel,env[,c("alt","oxy","bdo")],type="RDA",permutations=999)
+#Forward selection for CCA using vegan's ordiR2step()
+mod0 <- cca(spe ~ 1, env)  # Model with intercept only
+mod1 <- cca(spe ~., env)
+ordiR2step(mod0, mod1,direction = "forward")
+#the remaining variables: alt, oxy,bdo
+permu.hp(spe,env[,c("alt","oxy","bdo")],type="CCA",permutations=999)
+data(mite)
+data(mite.env)
+mite.hel <- decostand(mite, "hellinger")
+mod0 <- rda(mite.hel ~ 1, mite.env)  # Model with intercept only
+mod1 <- rda(mite.hel~ ., mite.env)
+ordiR2step(mod0, mod1,direction = "forward")
+#the remaining variables: WatrCont,Shrub, Substrate,Topo
+permu.hp(mite.hel,mite.env[,-1],type="RDA",permutations=999)
+#Forward selection using vegan's ordiR2step()
+mod0 <- cca(mite ~ 1, mite.env)  # Model with intercept only
+mod1 <- cca(mite~., mite.env)
+ordiR2step(mod0, mod1,direction = "forward")
+#the remaining variables: WatrCont,SubsDens,Substrate,Topo
+permu.hp(mite,mite.env[,-4],type="CCA",permutations=99)
 }
 \references{
 Chevan, A. and Sutherland, M. 1991. Hierarchical Partitioning. The American Statistician 45:90~96
