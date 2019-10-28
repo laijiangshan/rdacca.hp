@@ -4,16 +4,16 @@
 \alias{rdacca.hp}
 \title{Hierarchical Partitioning for Redundancy Analysis and Canonical Correspondence Analysis}
 \usage{
-rdacca.hp(Y, X, type = "RDA", pieplot = "tv")
+rdacca.hp(Y, X, pieplot = "tv", type = "RDA", Trace = FALSE)
 }
 \arguments{
 \item{Y}{Community data matrix.}
 
 \item{X}{Constraining matrix less than 12 columns, typically of environmental variables.}
 
-\item{type}{the Constrained ordination: RDA or CCA, default "RDA"}
-
 \item{pieplot}{a pieplot each variable is plotted expressed as percentage of total variation (pieplot="tv") or total explained variation (pieplot="tev").}
+
+\item{type}{the Constrained ordination: RDA or CCA, default "RDA"}
 }
 \value{
 a list containing
@@ -56,10 +56,10 @@ ordiR2step(mod0, mod1,direction = "forward")
 #the remaining variables: alt,oxy,bdo
 rdacca.hp(spe.hel,env[,c("alt","oxy","bdo")],pieplot = "tv",type="RDA")
 rdacca.hp(spe.hel,env[,c("alt","oxy","bdo")],pieplot = "tev",type="RDA")
-#Forward selection for CCA using vegan's ordiR2step()
+#Forward selection for CCA using vegan's ordistep()
 mod0 <- cca(spe ~ 1, env)  # Model with intercept only
 mod1 <- cca(spe ~., env)
-ordiR2step(mod0, mod1,direction = "forward")
+ordistep(mod0, mod1,direction = "forward")
 #the remaining variables: alt, oxy,bdo
 rdacca.hp(spe,env[,c("alt","oxy","bdo")],pieplot = "tv",type="CCA")
 rdacca.hp(spe,env[,c("alt","oxy","bdo")],pieplot = "tev",type="CCA")
@@ -72,13 +72,13 @@ ordiR2step(mod0, mod1,direction = "forward")
 #the remaining variables: WatrCont,Shrub, Substrate,Topo
 rdacca.hp(mite.hel,mite.env[,-1],pieplot = "tv",type="RDA")
 rdacca.hp(mite.hel,mite.env[,-1],pieplot = "tev",type="RDA")
-#Forward selection using vegan's ordiR2step()
+#Forward selection using vegan's ordistep()
 mod0 <- cca(mite ~ 1, mite.env)  # Model with intercept only
 mod1 <- cca(mite ~., mite.env)
-ordiR2step(mod0, mod1,direction = "forward")
-#the remaining variables: WatrCont,SubsDens,Substrate,Topo
-rdacca.hp(mite,mite.env[,-4],pieplot = "tv",type="CCA")
-rdacca.hp(mite,mite.env[,-4],pieplot = "tev",type="CCA")
+ordistep(mod0, mod1,direction = "forward")
+#all variables is remaining
+rdacca.hp(mite,mite.env,pieplot = "tv",type="CCA")
+rdacca.hp(mite,mite.env,pieplot = "tev",type="CCA")
 }
 \references{
 Chevan, A. and Sutherland, M. 1991. Hierarchical Partitioning. The American Statistician 45:90~96

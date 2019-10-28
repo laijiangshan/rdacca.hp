@@ -67,12 +67,12 @@ mod1 <- rda(mite.hel~ ., mite.env)
 ordiR2step(mod0, mod1,direction = "forward")
 #the remaining variables: WatrCont,Shrub, Substrate,Topo
 permu.hp(mite.hel,mite.env[,-1],type="RDA",permutations=999)
-#Forward selection using vegan's ordiR2step()
+#Forward selection using vegan's ordistep()
 mod0 <- cca(mite ~ 1, mite.env)  # Model with intercept only
 mod1 <- cca(mite~., mite.env)
-ordiR2step(mod0, mod1,direction = "forward")
-#the remaining variables: WatrCont,SubsDens,Substrate,Topo
-permu.hp(mite,mite.env[,-4],type="CCA",permutations=99)
+ordistep(mod0, mod1,direction = "forward")
+#all variables is remaining
+permu.hp(mite,mite.env,type="CCA",permutations=99)
 }
 \references{
 Chevan, A. and Sutherland, M. 1991. Hierarchical Partitioning. The American Statistician 45:90~96

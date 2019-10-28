@@ -25,7 +25,7 @@ partition.rda=function (gfs, pcan, var.names = NULL)
         IJ.perc <- IJ * 100/sum(IJ)
         I <- data.frame(I = IJ[, 1], row.names = var.names)
         I.perc <- I * 100/sum(I)
-        IJ <- cbind(IJ, Total = IJ$I + IJ$J)
+        IJ <- data.frame(Total = IJ$I + IJ$J,J=IJ$J,I=IJ$I)
         list(gfs = gfs, IJ = IJ, I.perc = I.perc)
     }
 }
