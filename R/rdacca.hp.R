@@ -8,6 +8,7 @@
 #' @param  X Constraining matrix less than 12 columns, typically of environmental variables.
 #' @param  type the Constrained ordination: RDA or CCA, default "RDA"
 #' @param  pieplot a pieplot each variable is plotted expressed as percentage of total variation (pieplot="tv") or total explained variation (pieplot="tev").
+#' @param  Trace logical value indicating if the R2 of all combinations of environmental variables should be printed. Default is FALSE. If TRUE the gfs,joint contribution of each environmental variable are printed. 
 #' @details This function calculates the individual contribution of each independent variable to goodness of fit measures on RDA and CCA,
 #' applying the hierarchy algorithm of Chevan and Sutherland (1991) .
 #' all combinations of N independent variable use the function allr2.
@@ -72,10 +73,9 @@
 #'rdacca.hp(mite,mite.env,pieplot = "tev",type="CCA")
 
 
-
-rdacca.hp=function (Y, X, pieplot="tv", type="RDA")
+rdacca.hp=function (Y, X, pieplot = "tv", type = "RDA", Trace = FALSE) 
 {
-  require(scales)
+    require(scales)
   Env.num <- dim(X)[2]
   if (Env.num > 13)
     stop("Number of variables must be < 13 for current implementation",call. = FALSE)
@@ -122,7 +122,11 @@ rdacca.hp=function (Y, X, pieplot="tv", type="RDA")
     }
     
     par(op)
-    
-    list(R2=sum(HP$IJ[,"I"]), hp.R2 =HP$IJ["I"],adj.R2=sum(HPa$IJ[,"I"]),hp.adjR2=HPa$IJ["I"])
-  }
+        if (Trace == FALSE) 
+            return(list(R2 = sum(HP$IJ[, "I"]), hp.R2 = HP$IJ["I"], 
+                adj.R2 = sum(HPa$IJ[, "I"]), hp.adjR2 = HPa$IJ["I"]))
+        if (Trace == TRUE) 
+            return(list(R2 = sum(HP$IJ[, "I"]), gfs = gfs, hp.R2 = HP$IJ, 
+                adj.R2 = sum(HPa$IJ[, "I"]), gfsa = gfsa, hp.adjR2 = HPa$IJ))
+    }
 }
