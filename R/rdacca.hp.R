@@ -122,10 +122,10 @@ rdacca.hp=function (Y, X, pieplot = "tv", type = "RDA", Trace = FALSE)
     }
     
     par(op)
-        if (Trace == FALSE) 
-            return(list(R2 = sum(HP$IJ[, "I"]), hp.R2 = HP$IJ["I"], 
+    if (Trace == FALSE) 
+    return(list(R2 = sum(HP$IJ[, "I"]), hp.R2 = HP$IJ["I"], 
                 adj.R2 = sum(HPa$IJ[, "I"]), hp.adjR2 = HPa$IJ["I"]))
-        if (Trace == TRUE) 
+    if (Trace == TRUE) 
             return(list(R2 = sum(HP$IJ[, "I"]), gfs = gfs, hp.R2 = HP$IJ, 
                 adj.R2 = sum(HPa$IJ[, "I"]), gfsa = gfsa, hp.adjR2 = HPa$IJ))
     }

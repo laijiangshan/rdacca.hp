@@ -15,7 +15,7 @@ rdacca.hp(Y, X, pieplot = "tv", type = "RDA", Trace = FALSE)
 
 \item{type}{the Constrained ordination: RDA or CCA, default "RDA"}
 
-\item{Trace}{logical value indicating if the R2 of all combinations of environmental variables should be printed. Default is FALSE. If TRUE the gfs,joint contribution of each environmental variable are printed}
+\item{Trace}{logical value indicating if the R2 of all combinations of environmental variables should be printed. Default is FALSE. If TRUE the gfs,joint contribution of each environmental variable are printed.}
 }
 \value{
 a list containing
