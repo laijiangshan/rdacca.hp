@@ -1,27 +1,28 @@
 #'Permutation Test for Hierarchical Partitioning for Redundancy Analysis and Canonical Correspondence Analysis 
 #'
-#' This function performs permutation test for the individual contribution of each environmental variable for Redundancy Analysis and Canonical Correspondence Analysis,
-#' applying the hierarchy algorithm of Chevan and Sutherland (1991) .
-#' 
-#' @param  Y Community data matrix for RDA and CCA,or a vector for general linear regression model.
-#' @param  X Constraining matrix less than 12 columns, typically of environmental variables.
-#' @param  type the Constrained ordination: RDA or CCA, default "RDA"
-#' @param  permutations the number of permutations required
+#'Randomizes row in Y and X and recalculates rdacca.hp permuation times
 
-#' @details This function perform significance test for individual R2 of each independent variable via random permutation of the
-#' rows of the Y data matrix. the test statistic is defined as individual R2. 
-#' At this stage, permu.hp  the defined permutation scheme
+#' @param  Y Response variables,typically of community data matrix.
+#' @param  X Explanatory variables, typically of environmental variables.
+#' @param  type The type of constrained ordination: RDA or CCA, the default is "RDA".
+#' @param  permutations The number of permutations required.
 
+#' @details 
+#' This function is a permutation routine for the rdacca.hp function which returns a matrix of I values (the independent contribution 
+#' towards explained variation in RDA or CCA) for each explanatory variables. For each permutation, the values in each row (both Y and X) 
+#' are randomized independently, and rdacca.hp is run on the randomized Y and X.  
+#' The function returns a summary table listing the observed I values, the pvalue for each I value.
 
 #' @return a list containing
-#' @return \item{R2}{unadjusted R-squared for RDA or CCA  for overall model.}
-#' @return \item{hp.R2}{a dataframe for unadjusted R-squared for individual environmental variables and p-value.}
-#' @return \item{adj.R2}{adjusted R-squared for RDA or CCA for overall model.}
-#' @return \item{hp.adjR2}{a dataframe for adjusted R-squared for individual environmental variables and p-value.}
+#' @return \item{R2}{Unadjusted R-squared of RDA or CCA for overall model.}
+#' @return \item{hp.R2}{The independent contribution for each explanatory variable (based on unadjusted  R-squared) and p-value.}
+#' @return \item{adj.R2}{Adjusted  R-squared of RDA or CCA for overall model.}
+#' @return \item{hp.adjR2}{The independent contribution for each explanatory variable (based on adjusted  R-squared) and p-value.}
 
+#' @author {Jiangshan Lai} \email{lai@ibcas.ac.cn}
 #' @references
-#' Chevan, A. and Sutherland, M. 1991. Hierarchical Partitioning. The American Statistician 45:90~96
-
+#' Chevan Albert and Sutherland Michael. 1991. Hierarchical Partitioning. The American Statistician.45:90-96
+#' @references
 #' Chris Walsh and Ralph Mac Nally 2013. hier.part: Hierarchical Partitioning. R package version 1.0-4.https://CRAN.R-project.org/package=hier.part
 
 #' @examples
@@ -32,45 +33,16 @@
 #'#Remove empty site 8
 #'spe<-spe[-8,]
 #'env<-env[-8,]
-#'#Remove the 'dfs' variable from the env data frame
-#'env <- env[, -1]
-#'# Hellinger-transform the species dataset
+#'#Hellinger-transform the species dataset for RDA
 #'spe.hel <- decostand(spe, "hellinger")
-#'#Forward selection for RDA using vegan's ordiR2step()
-#'mod0 <- rda(spe.hel~ 1, env)  # Model with intercept only
-#'mod1 <- rda(spe.hel~ ., env)
-#'ordiR2step(mod0, mod1,direction = "forward")
-#'#the remaining variables: alt,oxy,bdo
-#'permu.hp(spe.hel,env[,c("alt","oxy","bdo")],type="RDA",permutations=999)
-#'#Forward selection for CCA using vegan's ordiR2step()
-#'mod0 <- cca(spe ~ 1, env)  # Model with intercept only
-#'mod1 <- cca(spe ~., env)
-#'ordiR2step(mod0, mod1,direction = "forward")
-#'#the remaining variables: alt, oxy,bdo
-#'permu.hp(spe,env[,c("alt","oxy","bdo")],type="CCA",permutations=999)
-
-#'data(mite)
-#'data(mite.env)
-#'mite.hel <- decostand(mite, "hellinger")
-#Forward selection using vegan's ordiR2step()
-#'mod0 <- rda(mite.hel ~ 1, mite.env)  # Model with intercept only
-#'mod1 <- rda(mite.hel~ ., mite.env)
-#'ordiR2step(mod0, mod1,direction = "forward")
-#'#the remaining variables: WatrCont,Shrub, Substrate,Topo
-#'permu.hp(mite.hel,mite.env[,-1],type="RDA",permutations=999)
-
-#'#Forward selection using vegan's ordistep()
-#'mod0 <- cca(mite ~ 1, mite.env)  # Model with intercept only
-#'mod1 <- cca(mite~., mite.env)
-#'ordistep(mod0, mod1,direction = "forward")
-#'#all variables is remaining
-#'permu.hp(mite,mite.env,type="CCA",permutations=99)
-
-
-
+#'#select three variables: alt,oxy,and bdo as main explanatory set, via forward selection.
+#'permu.hp(spe.hel,env[,c("alt","oxy","bdo")],type="RDA",permutations=99)
+#'permu.hp(spe,env[,c("alt","oxy","bdo")],type="CCA",permutations=99)
 
 permu.hp=function(Y,X,type="RDA",permutations=999)
-{require(permute)
+{
+cat("\nPlease wait: running", permutations, "permutations \n")
+require(permute)
 obs=rdacca.hp(Y,X,type=type,pieplot ="")
 Y=data.frame(Y)
 n=dim(Y)[1]
@@ -85,10 +57,27 @@ for(i in 1:permutations)
 }
 
 Signi=function(x)
-{1-ecdf(x)(x[1])+1/(permutations+1)}
+{pval=1-ecdf(x)(x[1])+1/(permutations+1)
+if (pval <= 0.001) {
+		return(noquote(paste(pval,"***",sep=" ")))
+		}
+	if (pval <= 0.01) {
+		return(noquote(paste(pval," **",sep=" ")))
+		}		
+	if (pval <= 0.05) {
+		return(noquote(paste(pval,"  *",sep=" ")))
+		}
+	else {return(noquote(paste(pval,"   ",sep=" ")))
+		}
+		}
+		
 
 p.R2=apply(r2q,1,Signi)
 p.adjR2=apply(ar2q,1,Signi)
-return(list(R2=obs$R2,hp.R2=data.frame(obs$hp.R2,Pr=p.R2),adj.R2=obs$adj.R2,hp.adjR2=data.frame(adjR2=obs$hp.adjR2,Pr=p.adjR2)))
+hp.R2=data.frame(obs$hp.R2,Pr=p.R2)
+colnames(hp.R2)[2]="Pr(>I)"
+hp.adjR2=data.frame(adjR2=obs$hp.adjR2,Pr=p.adjR2)
+colnames(hp.adjR2)[2]="Pr(>I)"
+return(list(R2=obs$R2,hp.R2=hp.R2,adj.R2=obs$adj.R2,hp.adjR2=hp.adjR2))
 }
 

@@ -1,32 +1,33 @@
 #' Hierarchical Partitioning for Redundancy Analysis and Canonical Correspondence Analysis
 #'
-#' This function calculates the individual contribution of each environmental variable for Redundancy Analysis and Canonical Correspondence Analysis,
-#' applying the hierarchy algorithm of Chevan and Sutherland (1991) .
-#' 
-#'
-#' @param  Y Community data matrix.
-#' @param  X Constraining matrix less than 12 columns, typically of environmental variables.
-#' @param  type the Constrained ordination: RDA or CCA, default "RDA"
-#' @param  pieplot a pieplot each variable is plotted expressed as percentage of total variation (pieplot="tv") or total explained variation (pieplot="tev").
-#' @param  Trace logical value indicating if the R2 of all combinations of environmental variables should be printed. Default is FALSE. If TRUE the gfs,joint contribution of each environmental variable are printed. 
-#' @details This function calculates the individual contribution of each independent variable to goodness of fit measures on RDA and CCA,
-#' applying the hierarchy algorithm of Chevan and Sutherland (1991) .
-#' all combinations of N independent variable use the function allr2.
-#' It takes the list of goodness of fit measures and, using the partition function,to return a simple table listing each variable, its individuals contribution (I). 
-#' At this stage, the partition routine will not run for more than 12 independent variables. This function requires the vegan,hier.part package.
+#' Partitions variation for each explanatory variable in Redundancy Analysis and Canonical Correspondence Analysis
+ 
+#' @param  Y Response variables, typically of community data matrix.
+#' @param  X Explanatory variables, typically of environmental variables.
+#' @param  type The type of constrained ordination: RDA or CCA, the default is "RDA".
+#' @param  pieplot A pieplot where each variable is plotted expressed as the percentage of its independent R-squared in the total variation (pieplot="tv") or the total explained variation (pieplot="tev").
+#' @param  trace If TRUE,R-squared of all combinations (from all.R2 function),joint contribution of each explanatory variable are printed. The default is FALSE.
+#' @details This function calculates the independent contribution of each explanatory variable to explained variation (R-squared) on RDA and CCA,
+#' applying the hierarchy algorithm of Chevan and Sutherland (1991). The algorithm is that all joint R-squared will be decomposed into equal fractions by number 
+#' of involved explanatory variables and average assigned to these variables. Independent R-squared of each variable will be the sum of assigned R-squared from joint R-squared and unique R-squared. 
+#' All combinations of N explanatory variable use the function allr2().
+#' It takes the list of R-squared and, using the partition function,to return a simple table listing each variable, its independent contribution (I). 
+#' At this stage, the partition routine will not run for more than 9 explanatory variables,due to limitation of computation power and a rounding error for analyses. This code of function is dependent on heir.part packages (Chris and Ralph 2013).
 
 #' @return a list containing
-#' @return \item{R2}{unadjusted R-squared for RDA or CCA  for overall model.}
-#' @return \item{hp.R2}{the individual contribution for each variable (based on unadjusted R-squared).}
-#' @return \item{adj.R2}{adjusted R-squared for RDA or CCA for overall model.}
-#' @return \item{hp.adjR2}{the individual contribution for each variable (based on adjusted R-squared).}
+#' @return \item{R2}{Unadjusted R-squared of RDA or CCA for overall model.}
+#' @return \item{all.R2}{If trace=TRUE,a vector listing the corresponding R-squared for the model using all combinations of each explanatory variables in ascending order.}
+#' @return \item{hp.R2}{The independent contribution for each explanatory variable (based on unadjusted R-squared).If trace=TRUE, the joint and total R-squared of each explanatory variables is listed.}
+#' @return \item{adj.R2}{Adjusted R-squared of RDA or CCA for overall model.}
+#' @return \item{all.adjR2}{If trace=TRUE, a vector listing the corresponding adjusted R-squared for the model using all combinations of each explanatory variables in ascending order.}
+#' @return \item{hp.adjR2}{The independent contribution for each explanatory variable (based on adjusted R-squared).If trace=TRUE, the joint and total adjusted R-squared of each explanatory variables is listed.}
 #' @author {Jiangshan Lai} \email{lai@ibcas.ac.cn}
 #' @references
-#' Chevan, A. and Sutherland, M. 1991. Hierarchical Partitioning. The American Statistician 45:90~96
-
+#' Chevan Albert and Sutherland Michael. 1991. Hierarchical Partitioning. The American Statistician.45:90-96
+#' @references
 #' Chris Walsh and Ralph Mac Nally 2013. hier.part: Hierarchical Partitioning. R package version 1.0-4.https://CRAN.R-project.org/package=hier.part
 
-#' @examples
+#'@examples
 #'require(ade4)
 #'data(doubs)
 #'spe<-doubs$fish
@@ -34,46 +35,20 @@
 #'#Remove empty site 8
 #'spe<-spe[-8,]
 #'env<-env[-8,]
-#'#Remove the 'dfs' variable from the env data frame
-#'env <- env[, -1]
-#'# Hellinger-transform the species dataset
+#'#Hellinger-transform the species dataset for RDA
 #'spe.hel <- decostand(spe, "hellinger")
-#'#Forward selection for RDA using vegan's ordiR2step()
-#'mod0 <- rda(spe.hel~ 1, env)  # Model with intercept only
-#'mod1 <- rda(spe.hel~ ., env)
-#'ordiR2step(mod0, mod1,direction = "forward")
-#'#the remaining variables: alt,oxy,bdo
-#'rdacca.hp(spe.hel,env[,c("alt","oxy","bdo")],pieplot = "tv",type="RDA")
-#'rdacca.hp(spe.hel,env[,c("alt","oxy","bdo")],pieplot = "tev",type="RDA")
-#'#Forward selection for CCA using vegan's ordistep()
-#'mod0 <- cca(spe ~ 1, env)  # Model with intercept only
-#'mod1 <- cca(spe ~., env)
-#'ordistep(mod0, mod1,direction = "forward")
-#'#the remaining variables: alt, oxy,bdo
-#'rdacca.hp(spe,env[,c("alt","oxy","bdo")],pieplot = "tv",type="CCA")
+#'#select three variables: alt,oxy,and bdo as main explanatory set, via forward selection.
+#'rdacca.hp(spe.hel,env[,c("alt","oxy","bdo")],pieplot = "tv",type="RDA",trace=TRUE)
 #'rdacca.hp(spe,env[,c("alt","oxy","bdo")],pieplot = "tev",type="CCA")
 
 #'data(mite)
 #'data(mite.env)
+#'#Hellinger-transform the species dataset for RDA
 #'mite.hel <- decostand(mite, "hellinger")
-#Forward selection using vegan's ordiR2step()
-#'mod0 <- rda(mite.hel ~ 1, mite.env)  # Model with intercept only
-#'mod1 <- rda(mite.hel~ ., mite.env)
-#'ordiR2step(mod0, mod1,direction = "forward")
-#'#the remaining variables: WatrCont,Shrub, Substrate,Topo
-#'rdacca.hp(mite.hel,mite.env[,-1],pieplot = "tv",type="RDA")
-#'rdacca.hp(mite.hel,mite.env[,-1],pieplot = "tev",type="RDA")
+#'rdacca.hp(mite.hel,mite.env,pieplot = "tv",type= "RDA",trace=TRUE)
+#'rdacca.hp(mite,mite.env,pieplot = "tev",type= "CCA")
 
-#'#Forward selection using vegan's ordistep()
-#'mod0 <- cca(mite ~ 1, mite.env)  # Model with intercept only
-#'mod1 <- cca(mite ~., mite.env)
-#'ordistep(mod0, mod1,direction = "forward")
-#'#all variables is remaining
-#'rdacca.hp(mite,mite.env,pieplot = "tv",type="CCA")
-#'rdacca.hp(mite,mite.env,pieplot = "tev",type="CCA")
-
-
-rdacca.hp=function (Y, X, pieplot = "tv", type = "RDA", Trace = FALSE) 
+rdacca.hp=function (Y, X, pieplot = "tv", type = "RDA", trace = FALSE) 
 {
     require(scales)
   Env.num <- dim(X)[2]
@@ -122,11 +97,11 @@ rdacca.hp=function (Y, X, pieplot = "tv", type = "RDA", Trace = FALSE)
     }
     
     par(op)
-    if (Trace == FALSE) 
+    if (trace == FALSE) 
     return(list(R2 = sum(HP$IJ[, "I"]), hp.R2 = HP$IJ["I"], 
                 adj.R2 = sum(HPa$IJ[, "I"]), hp.adjR2 = HPa$IJ["I"]))
-    if (Trace == TRUE) 
-            return(list(R2 = sum(HP$IJ[, "I"]), gfs = gfs, hp.R2 = HP$IJ, 
-                adj.R2 = sum(HPa$IJ[, "I"]), gfsa = gfsa, hp.adjR2 = HPa$IJ))
+    if (trace == TRUE) 
+            return(list(R2 = sum(HP$IJ[, "I"]), all.R2 = gfs, hp.R2 = HP$IJ, 
+                adj.R2 = sum(HPa$IJ[, "I"]), all.adjR2 = gfsa, hp.adjR2 = HPa$IJ))
     }
 }

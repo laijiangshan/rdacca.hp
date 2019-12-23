@@ -7,33 +7,33 @@
 permu.hp(Y, X, type = "RDA", permutations = 999)
 }
 \arguments{
-\item{Y}{Community data matrix for RDA and CCA,or a vector for general linear regression model.}
+\item{Y}{Response variables,typically of community data matrix.}
 
-\item{X}{Constraining matrix less than 12 columns, typically of environmental variables.}
+\item{X}{Explanatory variables, typically of environmental variables.}
 
-\item{type}{the Constrained ordination: RDA or CCA, default "RDA"}
+\item{type}{The type of constrained ordination: RDA or CCA, the default is "RDA".}
 
-\item{permutations}{the number of permutations required}
+\item{permutations}{The number of permutations required.}
 }
 \value{
 a list containing
 
-\item{R2}{unadjusted R-squared for RDA or CCA  for overall model.}
+\item{R2}{Unadjusted R-squared of RDA or CCA for overall model.}
 
-\item{hp.R2}{a dataframe for unadjusted R-squared for individual environmental variables and p-value.}
+\item{hp.R2}{The independent contribution for each explanatory variable (based on unadjusted  R-squared) and p-value.}
 
-\item{adj.R2}{adjusted R-squared for RDA or CCA for overall model.}
+\item{adj.R2}{Adjusted  R-squared of RDA or CCA for overall model.}
 
-\item{hp.adjR2}{a dataframe for adjusted R-squared for individual environmental variables and p-value.}
+\item{hp.adjR2}{The independent contribution for each explanatory variable (based on adjusted  R-squared) and p-value.}
 }
 \description{
-This function performs permutation test for the individual contribution of each environmental variable for Redundancy Analysis and Canonical Correspondence Analysis,
-applying the hierarchy algorithm of Chevan and Sutherland (1991) .
+Randomizes row in Y and X and recalculates rdacca.hp permuation times
 }
 \details{
-This function perform significance test for individual R2 of each independent variable via random permutation of the
-rows of the Y data matrix. the test statistic is defined as individual R2. 
-At this stage, permu.hp  the defined permutation scheme
+This function is a permutation routine for the rdacca.hp function which returns a matrix of I values (the independent contribution 
+towards explained variation in RDA or CCA) for each explanatory variables. For each permutation, the values in each row (both Y and X) 
+are randomized independently, and rdacca.hp is run on the randomized Y and X.  
+The function returns a summary table listing the observed I values, the pvalue for each I value.
 }
 \examples{
 require(ade4)
@@ -43,38 +43,17 @@ env<-doubs$env
 #Remove empty site 8
 spe<-spe[-8,]
 env<-env[-8,]
-#Remove the 'dfs' variable from the env data frame
-env <- env[, -1]
-# Hellinger-transform the species dataset
+#Hellinger-transform the species dataset for RDA
 spe.hel <- decostand(spe, "hellinger")
-#Forward selection for RDA using vegan's ordiR2step()
-mod0 <- rda(spe.hel~ 1, env)  # Model with intercept only
-mod1 <- rda(spe.hel~ ., env)
-ordiR2step(mod0, mod1,direction = "forward")
-#the remaining variables: alt,oxy,bdo
-permu.hp(spe.hel,env[,c("alt","oxy","bdo")],type="RDA",permutations=999)
-#Forward selection for CCA using vegan's ordiR2step()
-mod0 <- cca(spe ~ 1, env)  # Model with intercept only
-mod1 <- cca(spe ~., env)
-ordiR2step(mod0, mod1,direction = "forward")
-#the remaining variables: alt, oxy,bdo
-permu.hp(spe,env[,c("alt","oxy","bdo")],type="CCA",permutations=999)
-data(mite)
-data(mite.env)
-mite.hel <- decostand(mite, "hellinger")
-mod0 <- rda(mite.hel ~ 1, mite.env)  # Model with intercept only
-mod1 <- rda(mite.hel~ ., mite.env)
-ordiR2step(mod0, mod1,direction = "forward")
-#the remaining variables: WatrCont,Shrub, Substrate,Topo
-permu.hp(mite.hel,mite.env[,-1],type="RDA",permutations=999)
-#Forward selection using vegan's ordistep()
-mod0 <- cca(mite ~ 1, mite.env)  # Model with intercept only
-mod1 <- cca(mite~., mite.env)
-ordistep(mod0, mod1,direction = "forward")
-#all variables is remaining
-permu.hp(mite,mite.env,type="CCA",permutations=99)
+#select three variables: alt,oxy,and bdo as main explanatory set, via forward selection.
+permu.hp(spe.hel,env[,c("alt","oxy","bdo")],type="RDA",permutations=99)
+permu.hp(spe,env[,c("alt","oxy","bdo")],type="CCA",permutations=99)
 }
 \references{
-Chevan, A. and Sutherland, M. 1991. Hierarchical Partitioning. The American Statistician 45:90~96
+Chevan Albert and Sutherland Michael. 1991. Hierarchical Partitioning. The American Statistician.45:90-96
+
 Chris Walsh and Ralph Mac Nally 2013. hier.part: Hierarchical Partitioning. R package version 1.0-4.https://CRAN.R-project.org/package=hier.part
+}
+\author{
+{Jiangshan Lai} \email{lai@ibcas.ac.cn}
 }

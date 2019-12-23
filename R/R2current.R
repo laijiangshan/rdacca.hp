@@ -1,3 +1,8 @@
+#' Internal functions for rdacca.hp
+#'
+#' Internal functions for rdacca.hp
+#' @author {Jiangshan Lai} \email{lai@ibcas.ac.cn}
+
 R2current=function(Y, current.comb, X,type)
 {require(vegan)
     data <- data.frame(X[, current.comb])

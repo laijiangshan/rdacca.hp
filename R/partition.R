@@ -1,9 +1,14 @@
+#' Internal functions for rdacca.hp
+#'
+#' Internal functions for rdacca.hp
+#' @author {Jiangshan Lai} \email{lai@ibcas.ac.cn}
+
 partition.rda=function (gfs, pcan, var.names = NULL)
 {require(hier.part)
-    if (pcan > 12)
-        stop("Number of variables must be < 13 for current implementation",call. = FALSE)
+    if (pcan > 9)
+        stop("Number of explanatory variables must be < 10 for current implementation",call. = FALSE)
     else if (pcan > 9)
-        warning("rdaenvpart produces a rounding error if number of variables >9\nSee documentation.",
+        warning("rdacca.hp produces a rounding error if number of explanatory variables >9",
             call. = FALSE)
     {
         n <- 2^pcan
