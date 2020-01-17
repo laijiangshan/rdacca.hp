@@ -42,7 +42,7 @@
 permu.hp=function(Y,X,type="RDA",permutations=999)
 {
 cat("\nPlease wait: running", permutations, "permutations \n")
-require(permute)
+#require(permute)
 obs=rdacca.hp(Y,X,type=type,pieplot ="")
 Y=data.frame(Y)
 n=dim(Y)[1]

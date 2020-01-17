@@ -3,8 +3,14 @@
 #' Internal functions for rdacca.hp
 #' @author {Jiangshan Lai} \email{lai@ibcas.ac.cn}
 
+#' @param  gfs a vector of r-squared from a hierarchy of RDA or CCA based on pcan variables in ascending order (as produced by function hpmatrix, but also including the null model as the first element)
+#' @param  pcan the number of variables from which the hierarchy was constructed (maximum =9)
+#' @param  var.names an array of pcan variable names, if required
+
+
+
 partition.rda=function (gfs, pcan, var.names = NULL)
-{require(hier.part)
+{#require(hier.part)
     if (pcan > 9)
         stop("Number of explanatory variables must be < 10 for current implementation",call. = FALSE)
     else if (pcan > 9)

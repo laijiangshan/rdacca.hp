@@ -4,8 +4,8 @@ Title: Hierarchical Partitioning for Redundancy Analysis and Canonical Correspon
 Version: 1.0.0
 Author: Jiangshan Lai
 Maintainer: Jiangshan Lai <lai@ibcas.ac.cn>
-Description: Variation partition of a multivariate data set on contrained ordination
-Depends: vegan,hier.part,permute,gtools,ade4
+Description: This function calculates the independent contribution of each explanatory variable to explained variation (R-squared) on RDA and CCA,applying the hierarchy algorithm
+Depends: vegan,hier.part,permute,gtools,ade4,scales
 License: GPL-2
 Encoding: UTF-8
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2

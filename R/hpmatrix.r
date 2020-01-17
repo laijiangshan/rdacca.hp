@@ -19,7 +19,7 @@
 
 
 hpmatrix=function(n) 
-{   require(gtools)
+{   #require(gtools)
     x <- cbind(1:n, matrix(0, n, n - 1))
     for (i in 2:n) {
         nc <- dim(combinations(n, i, 1:n))[1]

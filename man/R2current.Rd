@@ -6,6 +6,15 @@
 \usage{
 R2current(Y, current.comb, X, type)
 }
+\arguments{
+\item{Y}{Response variables, typically of community data matrix.}
+
+\item{current.comb}{The orders of focus explanatory variables for r-squared}
+
+\item{X}{Explanatory variables, typically of environmental variables.}
+
+\item{type}{The type of constrained ordination: RDA or CCA, the default is "RDA".}
+}
 \description{
 Internal functions for rdacca.hp
 }

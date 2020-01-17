@@ -12,7 +12,7 @@
 #' of involved explanatory variables and average assigned to these variables. Independent R-squared of each variable will be the sum of assigned R-squared from joint R-squared and unique R-squared. 
 #' All combinations of N explanatory variable use the function allr2().
 #' It takes the list of R-squared and, using the partition function,to return a simple table listing each variable, its independent contribution (I). 
-#' At this stage, the partition routine will not run for more than 9 explanatory variables,due to limitation of computation power and a rounding error for analyses. This code of function is dependent on heir.part packages (Chris and Ralph 2013).
+#' At this stage, the partition routine will not run for more than 9 explanatory variables, due to limitation of computation power and a rounding error for analyses. This code of function is dependent on heir.part packages (Chris and Ralph 2013).
 
 #' @return a list containing
 #' @return \item{R2}{Unadjusted R-squared of RDA or CCA for overall model.}
@@ -50,10 +50,9 @@
 
 rdacca.hp=function (Y, X, pieplot = "tv", type = "RDA", trace = FALSE) 
 {
-    require(scales)
   Env.num <- dim(X)[2]
-  if (Env.num > 13)
-    stop("Number of variables must be < 13 for current implementation",call. = FALSE)
+  if (Env.num > 10)
+    stop("Number of explanatory variables must be < 10 for current implementation",call. = FALSE)
   else {
     hpmodel<- allR2(Y,X,type)
     gfs <- hpmodel$gfs
@@ -67,33 +66,33 @@ rdacca.hp=function (Y, X, pieplot = "tv", type = "RDA", trace = FALSE)
     op <- par(no.readonly = TRUE) 
     
     if (pieplot=="tv") {
-      par(mfrow=c(1,2))
-      par(mar=c(0.5,2.5,2.5,2.5)) 
+      par(mfrow=c(2,1))
+      par(mar=c(0.5,1.5,2.5,1.5)) 
       lbls<- c("unexplained",row.names(HP$I.perc)) 
       pct <- round(c(1-sum(HP$IJ$I),HP$IJ$I)*100,1)
       lbls <- paste(lbls, pct) # add percents to labels
       lbls <- paste(lbls,"%",sep="") # ad % to labels
-      pie(pct,labels = lbls, main="% on Total variation\n (R2)",col=hue_pal()(length(lbls)),border = "white")
+      pie(pct,labels = lbls, main="% on total variation (R2)",col=hue_pal()(length(lbls)),border = "white")
       lblsa<- c("unexplained",row.names(HPa$I.perc)) 
       pcta <- round(c(1-sum(HPa$IJ$I),HPa$IJ$I)*100,1)
       lblsa <- paste(lblsa, pcta) # add percents to labels
       lblsa <- paste(lblsa,"%",sep="") # ad % to labels
-      pie(pcta,labels = lblsa, main="% on Total variation\n (adj.R2)",col=hue_pal()(length(lblsa)),border = "white")
+      pie(pcta,labels = lblsa, main="% on total variation (adj.R2)",col=hue_pal()(length(lblsa)),border = "white")
       
     }
     if (pieplot=="tev") {
-      par(mfrow=c(1,2))
-      par(mar=c(0.5,2.5,2.5,2.5)) 
+      par(mfrow=c(2,1))
+      par(mar=c(0.5,1.5,2.5,1.5)) 
       lbls<- row.names(HP$I.perc) 
       pct <- round(HP$I.perc$I,1)
       lbls <- paste(lbls, pct) # add percents to labels
       lbls <- paste(lbls,"%",sep="") # ad % to labels
-      pie(pct,labels = lbls,col=hue_pal()(length(lbls)), main="% on Total explained variation\n (R2)",border = "white")
+      pie(pct,labels = lbls,col=hue_pal()(length(lbls)), main="% on total explained variation (R2)",border = "white")
       lblsa<- row.names(HPa$I.perc) 
       pcta <- round(HPa$I.perc$I,1)
       lblsa <- paste(lblsa, pcta) # add percents to labels
       lblsa <- paste(lblsa,"%",sep="") # ad % to labels
-      pie(pcta,labels = lblsa,col=hue_pal()(length(lblsa)), main="% on Total explained variation\n (adj.R2)",border = "white")
+      pie(pcta,labels = lblsa,col=hue_pal()(length(lblsa)), main="% on total explained variation (adj.R2)",border = "white")
     }
     
     par(op)

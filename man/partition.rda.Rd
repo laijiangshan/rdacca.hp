@@ -6,6 +6,13 @@
 \usage{
 partition.rda(gfs, pcan, var.names = NULL)
 }
+\arguments{
+\item{gfs}{a vector of r-squared from a hierarchy of RDA or CCA based on pcan variables in ascending order (as produced by function hpmatrix, but also including the null model as the first element)}
+
+\item{pcan}{the number of variables from which the hierarchy was constructed (maximum =9)}
+
+\item{var.names}{an array of pcan variable names, if required}
+}
 \description{
 Internal functions for rdacca.hp
 }

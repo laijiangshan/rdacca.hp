@@ -41,7 +41,7 @@ applying the hierarchy algorithm of Chevan and Sutherland (1991). The algorithm 
 of involved explanatory variables and average assigned to these variables. Independent R-squared of each variable will be the sum of assigned R-squared from joint R-squared and unique R-squared. 
 All combinations of N explanatory variable use the function allr2().
 It takes the list of R-squared and, using the partition function,to return a simple table listing each variable, its independent contribution (I). 
-At this stage, the partition routine will not run for more than 9 explanatory variables,due to limitation of computation power and a rounding error for analyses. This code of function is dependent on heir.part packages (Chris and Ralph 2013).
+At this stage, the partition routine will not run for more than 9 explanatory variables, due to limitation of computation power and a rounding error for analyses. This code of function is dependent on heir.part packages (Chris and Ralph 2013).
 }
 \examples{
 require(ade4)
