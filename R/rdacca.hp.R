@@ -63,7 +63,7 @@ rdacca.hp=function (Y, X, pieplot = "tv", type = "RDA", trace = FALSE)
     HPa$IJ$I[HPa$IJ$I<0]=0
     HPa$I.perc[HPa$I.perc<0]=0
     
-    op <- par(no.readonly = TRUE) 
+    #op <- par(no.readonly = TRUE) 
     
     if (pieplot=="tv") {
       par(mfrow=c(2,1))
@@ -95,7 +95,7 @@ rdacca.hp=function (Y, X, pieplot = "tv", type = "RDA", trace = FALSE)
       pie(pcta,labels = lblsa,col=hue_pal()(length(lblsa)), main="% on total explained variation (adj.R2)",border = "white")
     }
     
-    par(op)
+   #par(op)
     if (trace == FALSE) 
     return(list(R2 = sum(HP$IJ[, "I"]), hp.R2 = HP$IJ["I"], 
                 adj.R2 = sum(HPa$IJ[, "I"]), hp.adjR2 = HPa$IJ["I"]))
