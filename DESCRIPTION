@@ -1,11 +1,17 @@
 Package: rdacca.hp
 Type: Package
-Title: Hierarchical Partitioning for Redundancy Analysis and Canonical Correspondence Analysis 
-Version: 1.0.0
-Author: Jiangshan Lai
+Title: Hierarchical Partitioning for Canonical Analysis 
+Version: 0.1.0
+Date:  2020-11-16
+Depends:  R (>= 3.4.0),vegan,ggplot2
+Authors@R: c(person("Jiangshan", "Lai", role = c("aut","cre"), email =
+        "lai@ibcas.ac.cn"), person("Pedro", "Peres-Neto", role =
+        "aut", email = "pedro.peres-neto@concordia.ca"))
+Author: Jiangshan Lai and  Pedro Peres-neto
 Maintainer: Jiangshan Lai <lai@ibcas.ac.cn>
-Description: This function calculates the independent contribution of each explanatory variable to explained variation (R-squared) on RDA and CCA,applying the hierarchy algorithm
-Depends: vegan,hier.part,permute,gtools,ade4,scales
-License: GPL-2
+Description: This function calculates the independent contribution of each explanatory variable to explained variation (R-squared) on RDA,CCA and dbRDA,applying the hierarchy algorithm.
+License: GPL
+URL: https://github.com/laijiangshan/rdacca.hp
 Encoding: UTF-8
-RoxygenNote: 7.0.2
+LazyData: true
+RoxygenNote: 7.1.1
