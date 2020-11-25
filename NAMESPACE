@@ -1,1 +1,4 @@
-exportPattern("^[[:alpha:]]+")
+## Export regular function names (no dots)
+export(rdacca.hp)
+import(stats)
+import(vegan)
