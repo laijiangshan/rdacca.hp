@@ -14,7 +14,7 @@ rdacca.hp(
 )
 }
 \arguments{
-\item{dv}{Response variables. if method=dbRDA, dv is the "dist" matrix.}
+\item{dv}{Response variables. if method="dbRDA", dv is the "dist" matrix.}
 
 \item{iv}{Explanatory variables, typically of environmental variables.}
 
@@ -24,7 +24,7 @@ rdacca.hp(
 
 \item{trace}{logical value, if TRUE, the vaules of commonality (2^N-1for N explanatory variables) are outputed,the default is FALSE.}
 
-\item{plot.perc}{logical value, if TRUE, the bar plot (based on ggplot2 packages) of the percentage ot independent effects of variables to total Rsquared, the default is FALSE to show plot with original independent effects.}
+\item{plot.perc}{logical value, if TRUE, the bar plot (based on ggplot2) of the percentage to independent effects of variables to total Rsquared, the default is FALSE to show plot with original independent effects.}
 }
 \value{
 a list containing
@@ -42,7 +42,7 @@ Hierarchical Partitioning for Canonical Analysis
 }
 \details{
 This function calculates the independent contribution of each explanatory variable to explained variation (R-squared) on canonical analysis (RDA,CCA and dbRDA),
-applying the hierarchy algorithm of Chevan and Sutherland (1991). The algorithm is that all joint R-squared will be decomposed into equal fractions by number 
+applying the hierarchy algorithm of Chevan and Sutherland (1991). The algorithm is that all joint R-squared will be decomposed into equal fractions by number
 of involved explanatory variables and average assigned to these variables. Independent R-squared of each variable will be the sum of assigned R-squared from joint R-squared and unique R-squared.
 }
 \examples{

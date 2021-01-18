@@ -1,11 +1,11 @@
 #' Hierarchical Partitioning for Canonical Analysis
 
-#' @param  dv Response variables. if method=dbRDA, dv is the "dist" matrix.
+#' @param  dv Response variables. if method="dbRDA", dv is the "dist" matrix.
 #' @param  iv Explanatory variables, typically of environmental variables.
 #' @param  method The type of canonical analysis: RDA, dbRDA or CCA, the default is "RDA".
 #' @param  type The type of total explained variation: "adjR2" is adjusted R-squared and "R2" for unadjusted R-squared, the default is "adjR2".
 #' @param  trace logical value, if TRUE, the vaules of commonality (2^N-1for N explanatory variables) are outputed,the default is FALSE.
-#' @param  plot.perc logical value, if TRUE, the bar plot (based on ggplot2) of the percentage ot independent effects of variables to total Rsquared, the default is FALSE to show plot with original independent effects.
+#' @param  plot.perc logical value, if TRUE, the bar plot (based on ggplot2) of the percentage to independent effects of variables to total Rsquared, the default is FALSE to show plot with original independent effects.
 
 #' @details This function calculates the independent contribution of each explanatory variable to explained variation (R-squared) on canonical analysis (RDA,CCA and dbRDA),
 #' applying the hierarchy algorithm of Chevan and Sutherland (1991). The algorithm is that all joint R-squared will be decomposed into equal fractions by number
@@ -207,8 +207,8 @@ gg=ggplot2::ggplot(tips2, ggplot2::aes(x = stats::reorder(variable, -value), y =
   ggplot2::theme_minimal()+ggplot2::labs(x="Variables",y="Independent effect")}
 
 print(gg)
+#class(outputList) <- "rdaccahp" # Class definition
 
 return(outputList)
 }
 }
-

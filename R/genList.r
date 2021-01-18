@@ -1,7 +1,9 @@
+#'Internal function for rdacca.hp()
+#' @param  ivlist The names of explanatory variables.
+#' @param  value  The sequence ID.
+
 genList <-
 function(ivlist, value){
-########################################################################################
-
 numlist  <-  length(ivlist)
 newlist <- ivlist
 newlist <- 0
