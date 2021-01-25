@@ -2,7 +2,7 @@
 % Please edit documentation in R/rdacca.hp.r
 \name{rdacca.hp}
 \alias{rdacca.hp}
-\title{Hierarchical Partitioning for Canonical Analysis}
+\title{Hierarchical Partitioning for Canonical Analysis via Commonality Analysis}
 \usage{
 rdacca.hp(
   dv,
@@ -16,13 +16,13 @@ rdacca.hp(
 \arguments{
 \item{dv}{Response variables. if method="dbRDA", dv is the "dist" matrix.}
 
-\item{iv}{Explanatory variables, typically of environmental variables.}
+\item{iv}{Explanatory variables, both data frame and list are allowed, data frame is for accessing each variable and list is for accessing each explanatory matrix.}
 
 \item{method}{The type of canonical analysis: RDA, dbRDA or CCA, the default is "RDA".}
 
 \item{type}{The type of total explained variation: "adjR2" is adjusted R-squared and "R2" for unadjusted R-squared, the default is "adjR2".}
 
-\item{trace}{logical value, if TRUE, the vaules of commonality (2^N-1for N explanatory variables) are outputed,the default is FALSE.}
+\item{trace}{logical value, if TRUE, the vaules of commonality (2^N-1 fractions for N explanatory variables or groups) are outputed,the default is FALSE.}
 
 \item{plot.perc}{logical value, if TRUE, the bar plot (based on ggplot2) of the percentage to independent effects of variables to total Rsquared, the default is FALSE to show plot with original independent effects.}
 }
@@ -31,29 +31,35 @@ a list containing
 
 \item{Method_Type}{The type of canonical analysis and the type of total explained variation.}
 
-\item{R.squared}{A mtrix listing independent effect and its percentage to total explained variation for each explanatory variable.}
+\item{R.squared}{The explained variation for global model.}
 
-\item{Commonality}{If trace=TRUE,a mtrix listing tha value and percentage of all commonality (2^N-1 for N explanatory variables).}
+\item{Commonality}{If trace=TRUE,a mtrix listing tha value and percentage of all commonality (2^N-1 for N explanatory variables or groups).}
 
-\item{Var.part}{A matrix listing independent effect and its percentage to total explained variation for each explanatory variable.}
+\item{Var.part}{A matrix listing independent effect and its percentage to total explained variation for each explanatory variable or groups.}
 }
 \description{
-Hierarchical Partitioning for Canonical Analysis
+Hierarchical Partitioning for Canonical Analysis via Commonality Analysis
 }
 \details{
-This function calculates the independent contribution of each explanatory variable to explained variation (R-squared) on canonical analysis (RDA,CCA and dbRDA),
+This function calculates the independent contribution of each explanatory variable or group to explained variation (R-squared) on canonical analysis (RDA,CCA and dbRDA),
 applying the hierarchy algorithm of Chevan and Sutherland (1991). The algorithm is that all joint R-squared will be decomposed into equal fractions by number
-of involved explanatory variables and average assigned to these variables. Independent R-squared of each variable will be the sum of assigned R-squared from joint R-squared and unique R-squared.
+of involved explanatory variables and average assigned to these variables. Independent R-squared of each variable or group will be the sum of assigned R-squared from joint R-squared and unique R-squared.
 }
 \examples{
 library(vegan)
 data(mite)
 data(mite.env)
+data(mite.xy)
+data(mite.pcnm)
 #Hellinger-transform the species dataset for RDA to deal with the "double zero" problem
 mite.hel <- decostand(mite, "hellinger")
 rdacca.hp(mite.hel,mite.env,method="RDA",type="adjR2")
 rdacca.hp(vegdist(mite),mite.env,method="dbRDA",type="adjR2")
 rdacca.hp(mite,mite.env,method="CCA",type="adjR2")
+iv <- list(env=mite.env,xy=mite.xy,pcnm=mite.pcnm)
+rdacca.hp(mite.hel,iv,method="RDA",trace = TRUE,plot.perc = FALSE)
+rdacca.hp(vegdist(mite),iv,method="dbRDA",trace = TRUE,plot.perc = FALSE)
+rdacca.hp(mite,iv,method="CCA",trace = TRUE,plot.perc = FALSE)
 }
 \author{
 {Jiangshan Lai} \email{lai@ibcas.ac.cn}
