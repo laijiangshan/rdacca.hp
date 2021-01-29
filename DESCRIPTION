@@ -1,12 +1,12 @@
 Package: rdacca.hp
 Type: Package
-Title: Hierarchical Partitioning for Canonical Analysis 
-Version: 0.3.0
-Date:  2021-1-24
+Title: Hierarchical Partitioning for Canonical Analysis via Commonality Analysis
+Version: 0.4.0
+Date:  2021-1-25
 Depends:  R (>= 3.4.0),vegan,ggplot2
 Author: Jiangshan Lai,Pedro Peres-neto
 Maintainer: Jiangshan Lai <lai@ibcas.ac.cn>
-Description: This function calculates the independent contribution of each explanatory variable to explained variation (R-squared) on RDA,CCA and db-RDA, applying the hierarchy algorithm of Chevan, A. and Sutherland, M. 1991 Hierarchical Partitioning.The American Statistician, 90-96 <DOI:10.1080/00031305.1991.10475776>. 
+Description: This function calculates the independent contribution of each explanatory variable or explanatory variable group to explained variation (R-squared) on RDA,CCA and db-RDA, applying the hierarchy algorithm of Chevan, A. and Sutherland, M. 1991 Hierarchical Partitioning.The American Statistician, 90-96 <DOI:10.1080/00031305.1991.10475776>. 
 License: GPL
 URL: https://github.com/laijiangshan/rdacca.hp
 Encoding: UTF-8

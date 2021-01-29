@@ -2,7 +2,7 @@
 % Please edit documentation in R/CanonicalFunctions.r
 \name{Canonical.Rsq}
 \alias{Canonical.Rsq}
-\title{Internal function for rdacca.hp()to caculate the Rsquared,adjusted Rsquared, Pseudo-F value, AIC and AICc for cannocial analysis (RDA,db-RDA and CCA)}
+\title{Internal function for rdacca.hp() to calculate the Rsquared, adjusted Rsquared, Pseudo-F value, AIC and AICc for canonical analysis (RDA, db-RDA and CCA)}
 \usage{
 Canonical.Rsq(dv, iv, method = "RDA", n.perm = 1000)
 }
@@ -13,8 +13,9 @@ Canonical.Rsq(dv, iv, method = "RDA", n.perm = 1000)
 
 \item{method}{The type of canonical analysis: RDA, dbRDA or CCA, the default is "RDA".}
 
-\item{n.perm}{The number of permutations required to caculate adjusted Rsquared for CCA}
+\item{n.perm}{The number of permutations required to calculate adjusted Rsquared for CCA}
 }
 \description{
-Internal function for rdacca.hp()to caculate the Rsquared,adjusted Rsquared, Pseudo-F value, AIC and AICc for cannocial analysis (RDA,db-RDA and CCA)
+Internal function for rdacca.hp() to calculate the Rsquared, adjusted Rsquared, Pseudo-F value, AIC and AICc for canonical analysis (RDA, db-RDA and CCA)
 }
+\keyword{internal}

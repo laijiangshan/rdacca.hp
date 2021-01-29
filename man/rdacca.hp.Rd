@@ -16,15 +16,15 @@ rdacca.hp(
 \arguments{
 \item{dv}{Response variables. if method="dbRDA", dv is the "dist" matrix.}
 
-\item{iv}{Explanatory variables, both data frame and list are allowed, data frame is for accessing each variable and list is for accessing each explanatory matrix.}
+\item{iv}{Explanatory variables, both data frame and list are allowed, data frame is for accessing each explanatory variable and list is for accessing each explanatory matrix.}
 
 \item{method}{The type of canonical analysis: RDA, dbRDA or CCA, the default is "RDA".}
 
 \item{type}{The type of total explained variation: "adjR2" is adjusted R-squared and "R2" for unadjusted R-squared, the default is "adjR2".}
 
-\item{trace}{logical value, if TRUE, the vaules of commonality (2^N-1 fractions for N explanatory variables or groups) are outputed,the default is FALSE.}
+\item{trace}{Logical value, if TRUE, the values of commonality (2^N-1 fractions for N explanatory variables or groups) are outputted, the default is FALSE.}
 
-\item{plot.perc}{logical value, if TRUE, the bar plot (based on ggplot2) of the percentage to independent effects of variables to total Rsquared, the default is FALSE to show plot with original independent effects.}
+\item{plot.perc}{Logical value, if TRUE, the bar plot (based on ggplot2) of the percentage to independent effects of variables or groups to total Rsquared, the default is FALSE to show plot with original independent effects.}
 }
 \value{
 a list containing
@@ -35,7 +35,7 @@ a list containing
 
 \item{Commonality}{If trace=TRUE,a mtrix listing tha value and percentage of all commonality (2^N-1 for N explanatory variables or groups).}
 
-\item{Var.part}{A matrix listing independent effect and its percentage to total explained variation for each explanatory variable or groups.}
+\item{Var.part}{A matrix listing independent effect and its percentage to total explained variation for each explanatory variable or group.}
 }
 \description{
 Hierarchical Partitioning for Canonical Analysis via Commonality Analysis

@@ -1,6 +1,5 @@
 ## Export regular function names (no dots)
 export(rdacca.hp)
-export(rdacca.mhp)
 import(stats)
 import(vegan)
 import(ggplot2)
