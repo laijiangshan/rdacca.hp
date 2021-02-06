@@ -13,7 +13,7 @@ Canonical.Rsq(dv, iv, method = "RDA", n.perm = 1000)
 
 \item{method}{The type of canonical analysis: RDA, dbRDA or CCA, the default is "RDA".}
 
-\item{n.perm}{The number of permutations required to calculate adjusted Rsquared for CCA}
+\item{n.perm}{#' @param  n.perm Number of permutations to use when computing the adjusted R-squared for a CCA.}
 }
 \description{
 Internal function for rdacca.hp() to calculate the Rsquared, adjusted Rsquared, Pseudo-F value, AIC and AICc for canonical analysis (RDA, db-RDA and CCA)

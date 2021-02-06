@@ -2,13 +2,14 @@
 % Please edit documentation in R/rdacca.hp.r
 \name{rdacca.hp}
 \alias{rdacca.hp}
-\title{Hierarchical Partitioning for Canonical Analysis via Commonality Analysis}
+\title{Hierarchical and Variation Partitioning for Canonical Analysis Without Limits for the Number of Predictors (Matrices)}
 \usage{
 rdacca.hp(
   dv,
   iv,
   method = c("RDA", "dbRDA", "CCA"),
   type = c("adjR2", "R2"),
+  n.perm = 1000,
   trace = FALSE,
   plot.perc = FALSE
 )
@@ -16,15 +17,17 @@ rdacca.hp(
 \arguments{
 \item{dv}{Response variables. if method="dbRDA", dv is the "dist" matrix.}
 
-\item{iv}{Explanatory variables, both data frame and list are allowed, data frame is for accessing each explanatory variable and list is for accessing each explanatory matrix.}
+\item{iv}{Predictors (explanatory variables), both data frame and list are allowed, data frame is for accessing each predictor and list is for accessing each predictor matrix.}
 
-\item{method}{The type of canonical analysis: RDA, dbRDA or CCA, the default is "RDA".}
+\item{method}{The type of canonical analysis: RDA, db-RDA or CCA, the default is "RDA". If dv is imputed as one numerical vector and method="RDA", the hierarchical and variation Partitioning for the classic (single response) multiple regression is implemented.}
 
-\item{type}{The type of total explained variation: "adjR2" is adjusted R-squared and "R2" for unadjusted R-squared, the default is "adjR2".}
+\item{type}{The type of total explained variation: "adjR2" is adjusted R-squared and "R2" for unadjusted R-squared, the default is "adjR2". The adjusted R-squared is calculated using Ezekiel’s formula (Ezekiel 1930) for RDA and db-RDA, while permutation procedure be used for CCA (Peres-Neto et al. 2006).}
 
-\item{trace}{Logical value, if TRUE, the values of commonality (2^N-1 fractions for N explanatory variables or groups) are outputted, the default is FALSE.}
+\item{n.perm}{Number of permutations to use when computing the adjusted R-squared for a CCA.}
 
-\item{plot.perc}{Logical value, if TRUE, the bar plot (based on ggplot2) of the percentage to independent effects of variables or groups to total Rsquared, the default is FALSE to show plot with original independent effects.}
+\item{trace}{If TRUE, the result of variation partitioning (2^N-1 fractions for N predictors or matrices) are outputted, the default is FALSE to save screen space.}
+
+\item{plot.perc}{If TRUE, the bar plot (based on ggplot2) of the percentage to independent effects of variables or groups to total Rsquared, the default is FALSE to show plot with original independent effects.}
 }
 \value{
 a list containing
@@ -33,17 +36,17 @@ a list containing
 
 \item{R.squared}{The explained variation for global model.}
 
-\item{Commonality}{If trace=TRUE,a mtrix listing tha value and percentage of all commonality (2^N-1 for N explanatory variables or groups).}
+\item{Var.part}{If trace=TRUE, a matrix listing the value and percentage of all commonality (2^N-1 for N predictors or matrices).}
 
-\item{Var.part}{A matrix listing independent effect and its percentage to total explained variation for each explanatory variable or group.}
+\item{Hier.part}{A matrix listing independent effect and its percentage to total explained variation for each predictor or matrix.}
 }
 \description{
-Hierarchical Partitioning for Canonical Analysis via Commonality Analysis
+Hierarchical and Variation Partitioning for Canonical Analysis Without Limits for the Number of Predictors (Matrices)
 }
 \details{
-This function calculates the independent contribution of each explanatory variable or group to explained variation (R-squared) on canonical analysis (RDA,CCA and dbRDA),
-applying the hierarchy algorithm of Chevan and Sutherland (1991). The algorithm is that all joint R-squared will be decomposed into equal fractions by number
-of involved explanatory variables and average assigned to these variables. Independent R-squared of each variable or group will be the sum of assigned R-squared from joint R-squared and unique R-squared.
+This function conducts variation partitioning and hierarchical partitioning to calculate the unique, shared (referred as to "common") and independent contributions of each predictor (or matrix) to explained variation (R-squared) on canonical analysis (RDA,CCA and db-RDA).
+Variation partitioning should be the starting point prior to hierarchical partitioning. While the former emphasizes unique and common variation among predictors, the latter emphasizes the overall importance of each predictor (or group of predictors). This function synchronously implements variation and hierarchical partitioning for single- and multiple-response models without limits in the number of predictors / matrices of predictors. 
+This package were particularly inspired by the very popular paper by Chevan & Sutherland (1991), R package "yhat" (Nimon, Oswald & Roberts 2013) and "hier.part"(Walsh & Mac Nally 2013).
 }
 \examples{
 library(vegan)
@@ -51,7 +54,7 @@ data(mite)
 data(mite.env)
 data(mite.xy)
 data(mite.pcnm)
-#Hellinger-transform the species dataset for RDA to deal with the "double zero" problem
+#Hellinger-transform the species dataset for RDA
 mite.hel <- decostand(mite, "hellinger")
 rdacca.hp(mite.hel,mite.env,method="RDA",type="adjR2")
 rdacca.hp(vegdist(mite),mite.env,method="dbRDA",type="adjR2")
@@ -60,6 +63,15 @@ iv <- list(env=mite.env,xy=mite.xy,pcnm=mite.pcnm)
 rdacca.hp(mite.hel,iv,method="RDA",trace = TRUE,plot.perc = FALSE)
 rdacca.hp(vegdist(mite),iv,method="dbRDA",trace = TRUE,plot.perc = FALSE)
 rdacca.hp(mite,iv,method="CCA",trace = TRUE,plot.perc = FALSE)
+}
+\references{
+\itemize{
+\item Chevan, A. & Sutherland, M. (1991). Hierarchical partitioning. American Statistician, 45, 90-96. doi:10.1080/00031305.1991.10475776
+\item Nimon, K., Oswald, F.L. & Roberts, J.K. (2013). Yhat: Interpreting regression effects. R package version 2.0.0.
+\item Walsh, C.J. & Mac Nally, R. (2013) hier.part: Hierarchical Partitioning. R package version 1.0-4.
+\item Peres-Neto, P.R., Legendre, P., Dray, S. & Borcard, D. (2006) Variation partitioning of species data matrices: Estimation and comparison of fractions. Ecology, 87, 2614-2625.doi: doi.org/10.1890/0012-9658(2006)87[2614:VPOSDM]2.0.CO;2
+\item Ezekiel, M. (1930) Methods of Correlational Analysis. Wiley, New York
+}
 }
 \author{
 {Jiangshan Lai} \email{lai@ibcas.ac.cn}
