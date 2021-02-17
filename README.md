@@ -6,6 +6,7 @@ install.packages("rdacca.hp")
 library(devtools)
 
 install_github('laijiangshan/rdacca.hp',build_vignettes = TRUE)
+
 #If you haven't had devtools installed, please install it by typing "install.packages("devtools")" in R console.
 
 Please feel free to send an email to the package maintainer Dr. Jiangshan Lai (lai@ibcas.ac.cn) if you have any question or comments about this package.
