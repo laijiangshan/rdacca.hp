@@ -2,7 +2,7 @@
 #' @param  dv Response variables. if method="dbRDA", dv is the "dist" matrix.
 #' @param  iv Explanatory variables, typically of environmental variables.
 #' @param  method The type of canonical analysis: RDA, dbRDA or CCA, the default is "RDA".
-#' @param  n.perm #' @param  n.perm Number of permutations to use when computing the adjusted R-squared for a CCA.
+#' @param  n.perm Number of permutations to use when computing the adjusted R-squared for a CCA.
 #' @keywords internal
 Canonical.Rsq <- function(dv,iv,method="RDA",n.perm=1000){ 
   GMI<-function(X,tol=0.000001){ # GMI stands for Generalized.Matrix.Inversion

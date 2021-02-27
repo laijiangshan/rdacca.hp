@@ -46,7 +46,7 @@ Hierarchical and Variation Partitioning for Canonical Analysis Without Limits fo
 \details{
 This function conducts variation partitioning and hierarchical partitioning to calculate the unique, shared (referred as to "common") and independent contributions of each predictor (or matrix) to explained variation (R-squared) on canonical analysis (RDA,CCA and db-RDA).
 Variation partitioning should be the starting point prior to hierarchical partitioning. While the former emphasizes unique and common variation among predictors, the latter emphasizes the overall importance of each predictor (or group of predictors). This function synchronously implements variation and hierarchical partitioning for single- and multiple-response models without limits in the number of predictors / matrices of predictors. 
-This package were particularly inspired by the very popular paper by Chevan & Sutherland (1991), R package "yhat" (Nimon, Oswald & Roberts 2013) and "hier.part"(Walsh & Mac Nally 2013).
+This package were particularly inspired by the very popular paper by Chevan & Sutherland (1991), R package "yhat" (Nimon, Oswald & Roberts 2013) and "hier.part"(Walsh & Mac Nally 2013). At this stage, although our internal function \code{\link{Canonical.Rsq}} can calculate R-squared of adjusted R-squared of CCA, it takes a long time. In order to save calculation time, we still have to call \code{\link{cca}} and \code{\link{RsquareAdj}} functions for CCA in vegan.
 }
 \examples{
 library(vegan)
