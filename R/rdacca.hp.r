@@ -23,6 +23,7 @@
 
 #' @references
 #' \itemize{
+#' \item Lai J.,Zou Y., Zhang J.,Peres-Neto P.(2021) rdacca.hp: an R package for generalizing hierarchical and variation partitioning in multiple regression and canonical analysis.bioRxiv 2021.03.09.434308,<DOI:10.1101/2021.03.09.434308>
 #' \item Chevan, A. & Sutherland, M. (1991). Hierarchical partitioning. American Statistician, 45, 90-96. doi:10.1080/00031305.1991.10475776
 #' \item Nimon, K., Oswald, F.L. & Roberts, J.K. (2013). Yhat: Interpreting regression effects. R package version 2.0.0.
 #' \item Walsh, C.J. & Mac Nally, R. (2013) hier.part: Hierarchical Partitioning. R package version 1.0-4.
