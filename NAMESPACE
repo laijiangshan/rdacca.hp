@@ -1,5 +1,7 @@
 ## Export regular function names (no dots)
 export(rdacca.hp)
+export(permu.hp)
+export(plot.rdaccahp)
 import(stats)
 import(vegan)
 import(ggplot2)
@@ -14,3 +16,5 @@ importFrom(ggplot2,theme_void)
 importFrom(ggplot2,geom_bar)
 importFrom(ggplot2,theme_minimal)
 importFrom(ggplot2,labs)
+## Registration of S3 methods defined in rdacca.hp
+S3method(plot, rdaccahp)

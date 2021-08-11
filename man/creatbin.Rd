@@ -14,3 +14,4 @@ creatbin(col, binmatrix)
 \description{
 Internal function for rdacca.hp() to create diagonal matrix
 }
+\keyword{internal}

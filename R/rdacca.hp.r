@@ -1,22 +1,24 @@
-#' Hierarchical and Variation Partitioning for Canonical Analysis Without Limits for the Number of Predictors (Matrices)
+#' Hierarchical and Variation Partitioning for Canonical Analysis Without Limiting the Number of Predictors (Matrices)
 
-#' @param  dv Response variables. if method="dbRDA", dv is the "dist" matrix.
-#' @param  iv Predictors (explanatory variables), both data frame and list are allowed, data frame is for accessing each predictor and list is for accessing each predictor matrix.
-#' @param  method The type of canonical analysis: RDA, db-RDA or CCA, the default is "RDA". If dv is imputed as one numerical vector and method="RDA", the hierarchical and variation Partitioning for the classic (single response) multiple regression is implemented.
-#' @param  type The type of total explained variation: "adjR2" is adjusted R-squared and "R2" for unadjusted R-squared, the default is "adjR2". The adjusted R-squared is calculated using Ezekiel’s formula (Ezekiel 1930) for RDA and db-RDA, while permutation procedure be used for CCA (Peres-Neto et al. 2006). 
-#' @param  n.perm Number of permutations to use when computing the adjusted R-squared for a CCA.
-#' @param  trace If TRUE, the result of variation partitioning (2^N-1 fractions for N predictors or matrices) are outputted, the default is FALSE to save screen space.
-#' @param  plot.perc If TRUE, the bar plot (based on ggplot2) of the percentage to independent effects of variables or groups to total Rsquared, the default is FALSE to show plot with original independent effects.
+#' @param  dv  Response variable, either a numeric vector or a matrix. If method="dbRDA", dv should be a "dist" matrix.
+#' @param  iv Predictors (explanatory variable), either a data frame or a list of data frames. If it is a data frame, the relative importance of each column of the data frame will be evaluated; if it is a list, the relative importance of each element (matrix) will be evaluated.
+#' @param  method Type of canonical analysis used for variation partitioning, should be a character string, either "RDA", "dbRDA" or "CCA", the default is "RDA". If the response variable (dv) is a numerical vector and method="RDA", the hierarchical and variation partitioning for the classical multiple regression is implemented.
+#' @param  type The type of total explained variation, either "R2" or "adjR2", in which "R2" is unadjusted R-square and "adjR2" is adjusted R-square, the default is "adjR2". The adjusted R-square is calculated using Ezekiel's formula (Ezekiel 1930) for RDA and dbRDA, while permutation procedure is used for CCA (Peres-Neto et al. 2006). 
+#' @param  scale Logical; If the columns of dv should be standardized to unit variance when method="RDA" is applied.
+#' @param  add Logical; If a constant should be added to the non-diagonal values to euclidify dissimilarities (see dbrda function in vegan for details). Choice "lingoes" (or TRUE) uses the recommended method of Legendre & Anderson (1999: "method 1") and "cailliez" uses their "method 2". The argument has an effect only when method="dbRDA".
+#' @param  sqrt.dist Logical, If the square root of dissimilarities should be taken. This often euclidifies dissimilarities. The argument has an effect only when method="dbRDA"(see dbrda function in vegan for details).
+#' @param  n.perm An integer; Number of permutations for computing the adjusted R-square for CCA.
+#' @param  var.part Logical; If TRUE, the result of variation partitioning (2^N-1 fractions for N predictors or matrices) are shown, the default is FALSE.
 
-#' @details This function conducts variation partitioning and hierarchical partitioning to calculate the unique, shared (referred as to "common") and independent contributions of each predictor (or matrix) to explained variation (R-squared) on canonical analysis (RDA,CCA and db-RDA).
-#' Variation partitioning should be the starting point prior to hierarchical partitioning. While the former emphasizes unique and common variation among predictors, the latter emphasizes the overall importance of each predictor (or group of predictors). This function synchronously implements variation and hierarchical partitioning for single- and multiple-response models without limits in the number of predictors / matrices of predictors. 
-#' This package were particularly inspired by the very popular paper by Chevan & Sutherland (1991), R package "yhat" (Nimon, Oswald & Roberts 2013) and "hier.part"(Walsh & Mac Nally 2013). At this stage, although our internal function \code{\link{Canonical.Rsq}} can calculate R-squared of adjusted R-squared of CCA, it takes a long time. In order to save calculation time, we still have to call \code{\link{cca}} and \code{\link{RsquareAdj}} functions for CCA in vegan.
+#' @details This function conducts variation partitioning and hierarchical partitioning to calculate the unique, average shared (referred as to "common") and individual contributions of each predictor (or matrix) towards explained variation (R-square) on canonical analysis (RDA,CCA and dbRDA).
+#' Variation partitioning should be conducted before hierarchical partitioning. The former emphasizes unique and common variation among predictors, the latter emphasizes the overall importance of each predictor (or group of predictors). This function simultaneously implements variation and hierarchical partitioning for single- and multiple-response models without limiting in the number of predictors / matrices of predictors. 
+#' This package was inspired by Chevan & Sutherland (1991)’s paper, the "yhat" (Nimon, Oswald & Roberts 2013) and "hier.part"(Walsh & Mac Nally 2013) R packages. 
 
 #' @return a list containing
-#' @return \item{Method_Type}{The type of canonical analysis and the type of total explained variation.}
-#' @return \item{R.squared}{The explained variation for global model.}
-#' @return \item{Var.part}{If trace=TRUE, a matrix listing the value and percentage of all commonality (2^N-1 for N predictors or matrices).}
-#' @return \item{Hier.part}{A matrix listing independent effect and its percentage to total explained variation for each predictor or matrix.}
+#' @return \item{Method_Type}{Type of canonical analysis and the type of total explained variation.}
+#' @return \item{Total_explained_variation}{The explained variation for the global model.}
+#' @return \item{Var.part}{If var.part=TRUE, a matrix containing the value and percentage of all commonality (2^N-1 for N predictors or matrices).}
+#' @return \item{Hier.part}{A matrix containing unique, average shared, individual effects and percentage of individual effect towards total explained variation for each predictor or matrix.}
 
 #' @author {Jiangshan Lai} \email{lai@ibcas.ac.cn}
 #' @author {Pedro Peres-Neto} \email{pedro.peres-neto@concordia.ca}
@@ -26,13 +28,14 @@
 #' \item Lai J.,Zou Y., Zhang J.,Peres-Neto P.(2021) rdacca.hp: an R package for generalizing hierarchical and variation partitioning in multiple regression and canonical analysis.bioRxiv 2021.03.09.434308,<DOI:10.1101/2021.03.09.434308>
 #' \item Chevan, A. & Sutherland, M. (1991). Hierarchical partitioning. American Statistician, 45, 90-96. doi:10.1080/00031305.1991.10475776
 #' \item Nimon, K., Oswald, F.L. & Roberts, J.K. (2013). Yhat: Interpreting regression effects. R package version 2.0.0.
+#' \item Legendre, P. & Anderson, M. J. (1999). Distance-based redundancy analysis: testing multispecies responses in multifactorial ecological experiments. Ecological Monographs, 69, 1–24.<DOI:10.1890/0012-9615(1999)069[0001:dbratm]2.0.co;2>
 #' \item Walsh, C.J. & Mac Nally, R. (2013) hier.part: Hierarchical Partitioning. R package version 1.0-4.
-#' \item Peres-Neto, P.R., Legendre, P., Dray, S. & Borcard, D. (2006) Variation partitioning of species data matrices: Estimation and comparison of fractions. Ecology, 87, 2614-2625.doi: doi.org/10.1890/0012-9658(2006)87[2614:VPOSDM]2.0.CO;2
+#' \item Peres-Neto, P.R., Legendre, P., Dray, S. & Borcard, D. (2006) Variation partitioning of species data matrices: Estimation and comparison of fractions. Ecology, 87, 2614-2625.<DOI: doi.org/10.1890/0012-9658(2006)87[2614:VPOSDM]2.0.CO;2>
 #' \item Ezekiel, M. (1930) Methods of Correlational Analysis. Wiley, New York
 #' }
 
 
-#' @export
+#'@export
 #'@examples
 #'library(vegan)
 #'data(mite)
@@ -45,51 +48,18 @@
 #'rdacca.hp(vegdist(mite),mite.env,method="dbRDA",type="adjR2")
 #'rdacca.hp(mite,mite.env,method="CCA",type="adjR2")
 #'iv <- list(env=mite.env,xy=mite.xy,pcnm=mite.pcnm)
-#'rdacca.hp(mite.hel,iv,method="RDA",trace = TRUE,plot.perc = FALSE)
-#'rdacca.hp(vegdist(mite),iv,method="dbRDA",trace = TRUE,plot.perc = FALSE)
-#'rdacca.hp(mite,iv,method="CCA",trace = TRUE,plot.perc = FALSE)
+#'rdacca.hp(mite.hel,iv,method="RDA",var.part = TRUE)
+#'rdacca.hp(vegdist(mite),iv,method="dbRDA",var.part = TRUE)
+#'rdacca.hp(mite,iv,method="CCA",var.part = TRUE)
 
 
-rdacca.hp <- function (dv,iv,method=c("RDA","dbRDA","CCA"),type=c("adjR2","R2"),n.perm=1000,trace = FALSE,plot.perc = FALSE) 
+rdacca.hp <- function (dv,iv,method=c("RDA","dbRDA","CCA"),type=c("adjR2","R2"),scale=FALSE,add = FALSE, sqrt.dist = FALSE,n.perm=1000,var.part = FALSE) 
 {
-creatbin <-
-function(col, binmatrix) {
-row<-1
-val<-col
-	while (val!=0){              
-	if (odd(val)) {
-		binmatrix[row,col]=1 
-	}
-	val<-as.integer(val/2)
-	row<-row+1
-}
-##Return matrix
-return(binmatrix)
-}
-
-odd <- function (val) 
-{
-    if (val%%2 == 0) 
-     return(FALSE)
-	 else
-    return(TRUE)
-}
-genList <-
-function(ivlist, value){
-numlist  <-  length(ivlist)
-newlist <- ivlist
-newlist <- 0
-for (i in 1:numlist){
-	newlist[i] <- abs(ivlist[i])+abs(value)
-	if (((ivlist[i]<0) && (value >= 0))|| ((ivlist[i]>=0) && (value <0)))newlist[i]=newlist[i]*-1
-}
-return(newlist)
-}
 
 if(is.data.frame(iv))
 {
   if(sum(is.na(dv))>=1|sum(is.na(iv))>=1)
-  {stop("NA is not allowed in this analysis")}
+  {stop("NA/NaN/Inf is not allowed in this analysis")}
   if(nrow(iv)<=ncol(iv))
   {stop("sample size (row) is less than the number of predictors")}
 
@@ -98,13 +68,16 @@ if(is.data.frame(iv))
   type <- type[1]
   if(inherits(dv, "dist"))
   {method <- "dbRDA"}
-  if(method=="dbRDA"){
+  if(method=="dbRDA"||method=="dbrda"||method=="DBRDA")
+  {
     if(!inherits(dv, "dist"))
-      return("dv should be a 'dist' matrix for dbRDA")
+      return("response variables should be a 'dist' matrix for dbRDA")
   }
 
-  if(method=="RDA")
-  {dv<-scale(dv,scale=F)}
+
+
+  if(method=="RDA"||method=="rda")                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+  {dv<-scale(dv,scale=scale)}
 
   iv <- data.frame(iv)
   ivname <- colnames(iv)
@@ -124,16 +97,23 @@ if(is.data.frame(iv))
     tmp <- iv[as.logical(binarymx[, i])]
     tmp.design <- as.matrix(stats::model.matrix(~ ., tmp))
     tmp.design.ct <- as.matrix(data.frame(scale(tmp.design,scale=FALSE))[-1])
-    if(method=="CCA")
+    
+    if(method=="RDA"||method=="rda")
+    {gfa <- simpleRDA2(dv,tmp.design.ct)
+    if(type=="R2")commonM[i, 2] <- gfa$Rsquare
+    if(type=="adjR2")commonM[i, 2] <- gfa$RsquareAdj
+    }
+	if(method=="CCA"||method=="cca")
     {gfa <- vegan::RsquareAdj(vegan::cca(dv~.,data=data.frame(tmp.design.ct)),permutations = n.perm)
     if(type=="R2")commonM[i, 2] <- gfa$r.squared
     if(type=="adjR2")commonM[i, 2] <- gfa$adj.r.squared
     }
-    if(method=="RDA"||method=="dbRDA")
-    {gfa <- Canonical.Rsq(dv,tmp.design.ct,method=method)
-    if(type=="R2")commonM[i, 2] <- gfa$unadj
-    if(type=="adjR2")commonM[i, 2] <- gfa$adj
-    }
+	if(method=="dbRDA"||method=="dbrda"||method=="DBRDA")
+    {
+	gfa <- vegan::RsquareAdj(vegan::dbrda(dv~.,data=data.frame(tmp.design.ct),add=add,sqrt.dist = sqrt.dist))
+	if(type=="R2")commonM[i, 2] <- gfa$r.squared
+    if(type=="adjR2")commonM[i, 2] <- gfa$adj.r.squared
+    }	
   }
 
   commonlist <- vector("list", totalN)
@@ -235,63 +215,51 @@ if(is.data.frame(iv))
                              justify = "right")
   dimnames(outputcommonM) <- list(rowNames, colNames)
 
-  VariableImportance <- matrix(nrow = nvar, ncol = 2)
+  VariableImportance <- matrix(nrow = nvar, ncol = 4)
   for (i in 1:nvar) {
-    VariableImportance[i, 1] <-  round(sum(binarymx[i, ] * (commonM[,
-                                                                    3]/apply(binarymx,2,sum))), digits = 4)
+	VariableImportance[i, 3] <-  round(sum(binarymx[i, ] * (commonM[,3]/apply(binarymx,2,sum))), digits = 4)
   }
-  total=round(sum(VariableImportance[,1]),4)
-  VariableImportance[, 2] <- round(100*VariableImportance[, 1]/total,2)
+  
+  VariableImportance[,1] <- outputcommonM[1:nvar,1]
+  VariableImportance[,2] <- VariableImportance[,3]-VariableImportance[,1]
+  
+  total=round(sum(VariableImportance[,3]),digits = 4)
+  VariableImportance[, 4] <- round(100*VariableImportance[, 3]/total,2)
 
-  dimnames(VariableImportance) <- list(iv.name, c("Independent","I.perc(%)"))
+  dimnames(VariableImportance) <- list(iv.name, c("Unique","Average.share","Individual","I.perc(%)"))
 
 
-
-
-if(trace)
-{outputList <- list(Method_Type=c(method,type),R.squared=total,Var.part = outputcommonM, Hier.part = VariableImportance)}
+if(var.part)
+{outputList <- list(Method_Type=c(method,type),Total_explained_variation=total,Var.part = outputcommonM, Hier.part = VariableImportance)}
 else
-{outputList<-list(Method_Type=c(method,type),R.squared=total,Hier.part= VariableImportance)}
-#class(outputList) <- "rdacca.hp" # Class definition
+{outputList<-list(Method_Type=c(method,type),Total_explained_variation=total,Hier.part= VariableImportance)}
 
-if(plot.perc)
-{tips3=data.frame(variable=rownames(outputList$Hier.part), value=as.numeric(outputList$Hier.part[,"I.perc(%)"]))
-gg=ggplot2::ggplot(tips3, ggplot2::aes(x = stats::reorder(variable, -value), y = value)) + ggplot2::geom_bar(stat = "identity")+
-  ggplot2::theme_minimal()+ggplot2::labs(x="Variables",y="Independent effect to Rsquared (%)")+ ggplot2::theme(axis.text = element_text(size = 10))+ ggplot2::theme(axis.title = element_text(size = 13))}
-else
-{tips2=data.frame(variable=rownames(outputList$Hier.part), value=as.numeric(outputList$Hier.part[,"Independent"]))
-gg=ggplot2::ggplot(tips2, ggplot2::aes(x = stats::reorder(variable, -value), y = value)) + ggplot2::geom_bar(stat = "identity")+
-  ggplot2::theme_minimal()+ggplot2::labs(x="Variables",y="Independent effect")+ ggplot2::theme(axis.text = element_text(size = 10))+ ggplot2::theme(axis.title = element_text(size = 13))
-}
+class(outputList) <- "rdaccahp" # Class definition
+outputList
 
-print(gg)
-#class(outputList) <- "rdaccahp" # Class definition
-
-return(outputList)
 }
 }
 #
 else
-#{rdacca.mhp(dv, iv,method,type,trace,plot.perc)}
 {nvar  <-  length(iv)
   if(sum(unlist(lapply(iv,is.data.frame)))<nvar)
   stop("data.frame is required for each group explanatory table")
 
   if(sum(is.na(dv))>=1|sum(is.na(unlist(iv)))>=1)
-  {stop("NA is not allowed in this analysis")}
+  {stop("NA/NaN/Inf is not allowed in this analysis")}
   
   else
   {method <- method[1]
   type <- type[1]
   if(inherits(dv, "dist"))
   {method <- "dbRDA"}
-  if(method=="dbRDA"){
+  if(method=="dbRDA"||method=="dbrda"||method=="DBRDA"){
     if(!inherits(dv, "dist"))
-      return("dv should be a 'dist' matrix for dbRDA method")
+      return("dv should be a 'dist' matrix for dbRDA")
   }
 
-  if(method=="RDA")
-  {dv<-scale(dv,scale=F)}
+  if(method=="RDA"||method=="rda")
+  {dv<-scale(dv,scale=scale)}
 	
 	
 	#method <- "RDA"
@@ -340,16 +308,25 @@ else
 		tmp <- ivls[[1]]
 		tmp.design <- as.matrix(model.matrix(~ ., tmp))
         tmp.design.ct <- as.matrix(data.frame(scale(tmp.design,scale=FALSE))[-1])
-	if(method=="CCA")
+	if(method=="RDA"||method=="rda")
+    {gfa <- simpleRDA2(dv,tmp.design.ct)
+    if(type=="R2")commonM[i, 2] <- gfa$Rsquare
+    if(type=="adjR2")commonM[i, 2] <- gfa$RsquareAdj
+    }
+	if(method=="CCA"||method=="cca")
     {gfa <- vegan::RsquareAdj(vegan::cca(dv~.,data=data.frame(tmp.design.ct)),permutations = n.perm)
     if(type=="R2")commonM[i, 2] <- gfa$r.squared
     if(type=="adjR2")commonM[i, 2] <- gfa$adj.r.squared
     }
-    if(method=="RDA"||method=="dbRDA")
-    {gfa=Canonical.Rsq(dv,tmp.design.ct,method=method)
-    if(type=="R2")commonM[i, 2] <- gfa$unadj
-    if(type=="adjR2")commonM[i, 2] <- gfa$adj}
-	}		
+
+	if(method=="dbRDA"||method=="dbrda"||method=="DBRDA")
+    {
+	gfa <- vegan::RsquareAdj(vegan::dbrda(dv~.,data=data.frame(tmp.design.ct),add=add,sqrt.dist = sqrt.dist))
+	if(type=="R2")commonM[i, 2] <- gfa$r.squared
+    if(type=="adjR2")commonM[i, 2] <- gfa$adj.r.squared
+    }	
+  }
+  
 		#commonM[i, 2] <-Canonical.Rsq(as.matrix(dv),tmp.design.ct,method=method)$adj}
 		if(N>1)
 		{inv <- ivls[[1]]
@@ -357,15 +334,23 @@ else
   {inv <- cbind(inv,ivls[[k]])}
 		tmp.design <- as.matrix(model.matrix(~ ., inv))
         tmp.design.ct <- as.matrix(data.frame(scale(tmp.design,scale=FALSE))[-1])
-		if(method=="CCA")
-    {gfa <- vegan::RsquareAdj(vegan::cca(dv~.,data=data.frame(tmp.design.ct)))
+	if(method=="RDA"||method=="rda")
+    {gfa <- simpleRDA2(dv,tmp.design.ct)
+    if(type=="R2")commonM[i, 2] <- gfa$Rsquare
+    if(type=="adjR2")commonM[i, 2] <- gfa$RsquareAdj
+    }	
+
+	if(method=="CCA"||method=="cca")
+    {gfa <- vegan::RsquareAdj(vegan::cca(dv~.,data=data.frame(tmp.design.ct)),permutations = n.perm)
     if(type=="R2")commonM[i, 2] <- gfa$r.squared
     if(type=="adjR2")commonM[i, 2] <- gfa$adj.r.squared
     }
-    if(method=="RDA"||method=="dbRDA")
-    {gfa <- Canonical.Rsq(dv,tmp.design.ct,method=method)
-    if(type=="R2")commonM[i, 2] <- gfa$unadj
-    if(type=="adjR2")commonM[i, 2] <- gfa$adj}	
+   if(method=="dbRDA"||method=="dbrda"||method=="DBRDA")
+    {
+	gfa <- vegan::RsquareAdj(vegan::dbrda(dv~.,data=data.frame(tmp.design.ct),add=add,sqrt.dist = sqrt.dist))
+	if(type=="R2")commonM[i, 2] <- gfa$r.squared
+    if(type=="adjR2")commonM[i, 2] <- gfa$adj.r.squared
+    }		
 	#commonM[i, 2] <-Canonical.Rsq(as.matrix(dv),tmp.design.ct,method=method)$adj}		
 	}
     }
@@ -473,38 +458,28 @@ else
 	
    # outputList <- list(Method=paste("Partition of variance in ",method,sep=""),Partition = outputcommonM, CCTotalbyVar = outputCCbyVar)
 
-
-  VariableImportance <- matrix(nrow = nvar, ncol = 2)
+  VariableImportance <- matrix(nrow = nvar, ncol = 4)
   for (i in 1:nvar) {
-    VariableImportance[i, 1] <-  round(sum(binarymx[i, ] * (commonM[,
-                                                                    3]/apply(binarymx,2,sum))), digits = 4)
+	VariableImportance[i, 3] <-  round(sum(binarymx[i, ] * (commonM[,3]/apply(binarymx,2,sum))), digits = 4)
   }
-  total=round(sum(VariableImportance[,1]),4)
-  VariableImportance[, 2] <- round(100*VariableImportance[, 1]/total,2)
+  
+  VariableImportance[,1] <- outputcommonM[1:nvar,1]
+  VariableImportance[,2] <- VariableImportance[,3]-VariableImportance[,1]
+  
+  total=round(sum(VariableImportance[,3]),digits = 4)
+  VariableImportance[, 4] <- round(100*VariableImportance[, 3]/total,2)
 
-  dimnames(VariableImportance) <- list(iv.name, c("Independent","I.perc(%)"))
+  dimnames(VariableImportance) <- list(iv.name, c("Unique","Average.share","Individual","I.perc(%)"))
 
 
-if(trace)
-{outputList <- list(Method_Type=c(method,type),R.squared=total,Var.part = outputcommonM, Hier.part = VariableImportance)}
+if(var.part)
+{outputList <- list(Method_Type=c(method,type),Total_explained_variation=total,Var.part = outputcommonM, Hier.part = VariableImportance)}
 else
-{outputList<-list(Method_Type=c(method,type),R.squared=total,Hier.part= VariableImportance)}
-#class(outputList) <- "rdacca.hp" # Class definition
+{outputList<-list(Method_Type=c(method,type),Total_explained_variation=total,Hier.part= VariableImportance)}
 
-if(plot.perc)
-{tips3=data.frame(variable=rownames(outputList$Hier.part), value=as.numeric(outputList$Hier.part[,"I.perc(%)"]))
-gg=ggplot2::ggplot(tips3, ggplot2::aes(x = stats::reorder(variable, -value), y = value)) + ggplot2::geom_bar(stat = "identity")+
-  ggplot2::theme_minimal()+ggplot2::labs(x="Variables",y="Independent effect to Rsquared (%)")+ ggplot2::theme(axis.text = element_text(size = 10))+ ggplot2::theme(axis.title = element_text(size = 13))}
-else
-{tips2=data.frame(variable=rownames(outputList$Hier.part), value=as.numeric(outputList$Hier.part[,"Independent"]))
-gg=ggplot2::ggplot(tips2, ggplot2::aes(x = stats::reorder(variable, -value), y = value)) + ggplot2::geom_bar(stat = "identity")+
-  ggplot2::theme_minimal()+ggplot2::labs(x="Variables",y="Independent effect")+ ggplot2::theme(axis.text = element_text(size = 10))+ ggplot2::theme(axis.title = element_text(size = 13))
+class(outputList) <- "rdaccahp" # Class definition
+outputList
+}
+}		
 }
 
-print(gg)
-#class(outputList) <- "rdaccahp" # Class definition
-		
-return(outputList)
-}
-}
-}

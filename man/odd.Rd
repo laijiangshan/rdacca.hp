@@ -12,3 +12,4 @@ odd(val)
 \description{
 Internal function for rdacca.hp() to determine whether the odd number
 }
+\keyword{internal}
