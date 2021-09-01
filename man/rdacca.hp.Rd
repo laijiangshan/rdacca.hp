@@ -31,7 +31,7 @@ rdacca.hp(
 
 \item{sqrt.dist}{Logical, If the square root of dissimilarities should be taken. This often euclidifies dissimilarities. The argument has an effect only when method="dbRDA"(see dbrda function in vegan for details).}
 
-\item{n.perm}{An integer; Number of permutations for computing the adjusted R-square for CCA.}
+\item{n.perm}{An integer; Number of permutations for computing the adjusted R-square for CCA. The argument has an effect only when method="CCA".}
 
 \item{var.part}{Logical; If TRUE, the result of variation partitioning (2^N-1 fractions for N predictors or matrices) are shown, the default is FALSE.}
 }
@@ -40,7 +40,7 @@ a list containing
 
 \item{Method_Type}{Type of canonical analysis and the type of total explained variation.}
 
-\item{Total_explained_variation}{The explained variation for the global model.}
+\item{Total_explained_variation}{The explained variation for the full model.}
 
 \item{Var.part}{If var.part=TRUE, a matrix containing the value and percentage of all commonality (2^N-1 for N predictors or matrices).}
 

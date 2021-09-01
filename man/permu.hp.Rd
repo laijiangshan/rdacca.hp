@@ -13,7 +13,7 @@ permu.hp(
   add = FALSE,
   sqrt.dist = FALSE,
   n.perm = 1000,
-  permutations = 999
+  permutations = 1000
 )
 }
 \arguments{
@@ -31,7 +31,7 @@ permu.hp(
 
 \item{sqrt.dist}{Logical, If the square root of dissimilarities should be taken. This often euclidifies dissimilarities. The argument has an effect only when method="dbRDA"(see dbrda function in vegan for details).}
 
-\item{n.perm}{An integer; Number of permutations for computing the adjusted R-square for CCA.}
+\item{n.perm}{An integer; Number of permutations for computing the adjusted R-square for CCA. The argument has an effect only when method="CCA".}
 
 \item{permutations}{An integer; Number of permutations for computing p value of individual contribution for the randomized dataset.}
 }
@@ -48,15 +48,9 @@ This function is a permutation test of hierarchical partitioning for canonical a
 library(vegan)
 data(mite)
 data(mite.env)
-data(mite.xy)
-data(mite.pcnm)
 #Hellinger-transform the species dataset for RDA
 mite.hel <- decostand(mite, "hellinger")
-permu.hp(mite.hel,mite.env,method="RDA",type="adjR2",permutations=99)
-permu.hp(vegdist(mite),mite.env,method="dbRDA",type="adjR2",permutations=99)
-iv <- list(env=mite.env,xy=mite.xy,pcnm=mite.pcnm)
-permu.hp(mite.hel,iv,method="RDA",permutations=99)
-permu.hp(vegdist(mite),iv,method="dbRDA",permutations=99)
+permu.hp(mite.hel,mite.env,method="RDA",type="adjR2",permutations=9)
 }
 \author{
 {Jiangshan Lai} \email{lai@ibcas.ac.cn}

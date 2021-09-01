@@ -7,7 +7,7 @@
 #' @param  scale Logical; If the columns of dv should be standardized to unit variance when method="RDA" is applied.
 #' @param  add Logical; If a constant should be added to the non-diagonal values to euclidify dissimilarities (see dbrda function in vegan for details). Choice "lingoes" (or TRUE) uses the recommended method of Legendre & Anderson (1999: "method 1") and "cailliez" uses their "method 2". The argument has an effect only when method="dbRDA".
 #' @param  sqrt.dist Logical, If the square root of dissimilarities should be taken. This often euclidifies dissimilarities. The argument has an effect only when method="dbRDA"(see dbrda function in vegan for details).
-#' @param  n.perm An integer; Number of permutations for computing the adjusted R-square for CCA.
+#' @param  n.perm An integer; Number of permutations for computing the adjusted R-square for CCA. The argument has an effect only when method="CCA".
 #' @param  var.part Logical; If TRUE, the result of variation partitioning (2^N-1 fractions for N predictors or matrices) are shown, the default is FALSE.
 
 #' @details This function conducts variation partitioning and hierarchical partitioning to calculate the unique, average shared (referred as to "common") and individual contributions of each predictor (or matrix) towards explained variation (R-square) on canonical analysis (RDA,CCA and dbRDA).
@@ -16,7 +16,7 @@
 
 #' @return a list containing
 #' @return \item{Method_Type}{Type of canonical analysis and the type of total explained variation.}
-#' @return \item{Total_explained_variation}{The explained variation for the global model.}
+#' @return \item{Total_explained_variation}{The explained variation for the full model.}
 #' @return \item{Var.part}{If var.part=TRUE, a matrix containing the value and percentage of all commonality (2^N-1 for N predictors or matrices).}
 #' @return \item{Hier.part}{A matrix containing unique, average shared, individual effects and percentage of individual effect towards total explained variation for each predictor or matrix.}
 
@@ -99,7 +99,7 @@ if(is.data.frame(iv))
     tmp.design.ct <- as.matrix(data.frame(scale(tmp.design,scale=FALSE))[-1])
     
     if(method=="RDA"||method=="rda")
-    {gfa <- simpleRDA2(dv,tmp.design.ct)
+    {gfa <- rdar2(dv,tmp.design.ct)
     if(type=="R2")commonM[i, 2] <- gfa$Rsquare
     if(type=="adjR2")commonM[i, 2] <- gfa$RsquareAdj
     }
@@ -309,7 +309,7 @@ else
 		tmp.design <- as.matrix(model.matrix(~ ., tmp))
         tmp.design.ct <- as.matrix(data.frame(scale(tmp.design,scale=FALSE))[-1])
 	if(method=="RDA"||method=="rda")
-    {gfa <- simpleRDA2(dv,tmp.design.ct)
+    {gfa <- rdar2(dv,tmp.design.ct)
     if(type=="R2")commonM[i, 2] <- gfa$Rsquare
     if(type=="adjR2")commonM[i, 2] <- gfa$RsquareAdj
     }
@@ -335,7 +335,7 @@ else
 		tmp.design <- as.matrix(model.matrix(~ ., inv))
         tmp.design.ct <- as.matrix(data.frame(scale(tmp.design,scale=FALSE))[-1])
 	if(method=="RDA"||method=="rda")
-    {gfa <- simpleRDA2(dv,tmp.design.ct)
+    {gfa <- rdar2(dv,tmp.design.ct)
     if(type=="R2")commonM[i, 2] <- gfa$Rsquare
     if(type=="adjR2")commonM[i, 2] <- gfa$RsquareAdj
     }	

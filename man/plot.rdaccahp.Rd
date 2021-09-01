@@ -4,10 +4,10 @@
 \alias{plot.rdaccahp}
 \title{Plot for a \code{\link{rdacca.hp}} object}
 \usage{
-\method{plot}{rdaccahp}(object, plot.perc = FALSE, ...)
+\method{plot}{rdaccahp}(x, plot.perc = FALSE, ...)
 }
 \arguments{
-\item{object}{A \code{\link{rdacca.hp}} object.}
+\item{x}{A \code{\link{rdacca.hp}} object.}
 
 \item{plot.perc}{Logical;if TRUE, the bar plot (based on ggplot2 package) of the percentage to individual effects of variables or groups towards total explained variation, the default is FALSE to show plot with original individual effects.}
 
@@ -26,7 +26,7 @@ data(mite.env)
 mite.hel <- decostand(mite, "hellinger")
 avc<-rdacca.hp(mite.hel,mite.env,method="RDA",type="adjR2")
 plot(avc)
-plot(avc,plot.perc=TRUE)
+plot(avc, plot.perc=TRUE)
 }
 \author{
 {Jiangshan Lai} \email{lai@ibcas.ac.cn}

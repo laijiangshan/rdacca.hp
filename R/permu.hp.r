@@ -7,7 +7,7 @@
 #' @param  scale Logical; If the columns of dv should be standardized to unit variance when method="RDA" is applied.
 #' @param  add Logical; If a constant should be added to the non-diagonal values to euclidify dissimilarities (see dbrda function in vegan for details). Choice "lingoes" (or TRUE) uses the recommended method of Legendre & Anderson (1999: "method 1") and "cailliez" uses their "method 2". The argument has an effect only when method="dbRDA".
 #' @param  sqrt.dist Logical, If the square root of dissimilarities should be taken. This often euclidifies dissimilarities. The argument has an effect only when method="dbRDA"(see dbrda function in vegan for details).
-#' @param  n.perm An integer; Number of permutations for computing the adjusted R-square for CCA.
+#' @param  n.perm An integer; Number of permutations for computing the adjusted R-square for CCA. The argument has an effect only when method="CCA".
 #' @param  permutations An integer; Number of permutations for computing p value of individual contribution for the randomized dataset.
 
 #' @details This function is a permutation test of hierarchical partitioning for canonical analysis. It returns a matrix of I values (the individual contribution towards total explained variation) for all values from permutations randomizations. For each permutation, the values in each variable (i.e each column of iv) are randomized independently, and rdacca.hp is run on the randomized iv. As well as the randomized I matrix, the function returns a summary table listing the observed I values, the p value of I for the randomized dataset.
@@ -22,21 +22,14 @@
 #'library(vegan)
 #'data(mite)
 #'data(mite.env)
-#'data(mite.xy)
-#'data(mite.pcnm)
 #'#Hellinger-transform the species dataset for RDA
 #'mite.hel <- decostand(mite, "hellinger")
-#'permu.hp(mite.hel,mite.env,method="RDA",type="adjR2",permutations=99)
-#'permu.hp(vegdist(mite),mite.env,method="dbRDA",type="adjR2",permutations=99)
-#'iv <- list(env=mite.env,xy=mite.xy,pcnm=mite.pcnm)
-#'permu.hp(mite.hel,iv,method="RDA",permutations=99)
-#'permu.hp(vegdist(mite),iv,method="dbRDA",permutations=99)
+#'permu.hp(mite.hel,mite.env,method="RDA",type="adjR2",permutations=9)
 
 
-
-permu.hp=function(dv, iv, method=c("RDA","dbRDA","CCA") ,type=c("adjR2","R2"),scale=FALSE,add = FALSE, sqrt.dist = FALSE,n.perm=1000,permutations=999)
+permu.hp=function(dv, iv, method=c("RDA","dbRDA","CCA") ,type=c("adjR2","R2"),scale=FALSE,add = FALSE, sqrt.dist = FALSE,n.perm=1000,permutations=1000)
 {
-cat("\nPlease wait: running", permutations, "permutations \n") 
+cat("\nPlease wait: running", permutations-1, "permutations \n") 
 obs <- rdacca.hp(dv,iv,method=method,type=type,scale=scale,add = add, sqrt.dist = sqrt.dist,n.perm=n.perm)
 r2q <- obs$Hier.part[,3]
 
@@ -44,14 +37,14 @@ if(is.data.frame(iv))
 {
 n <- dim(iv)[1]
 nvar <- dim(iv)[2]
-for(i in 1:permutations)
+for(i in 1:permutations-1)
 {
 newiv<-iv
 for(j in 1:nvar)
 {perms <- sample(1:n,n)
  newiv[,j] <-iv[,j][perms]
  }
- 
+
  row.names(newiv)<-1:n 
  simu=rdacca.hp(dv,newiv,method=method,type=type,scale=scale,add = add, sqrt.dist = sqrt.dist,n.perm=n.perm)
  r2q=cbind(r2q,simu$Hier.part[,3])
@@ -62,7 +55,7 @@ else
 {
 n <- dim(iv[[1]])[1]
 nvar  <-  length(iv)
-for(i in 1:permutations)
+for(i in 1:permutations-1)
 {perms <- sample(1:n,n)
  newiv <- list()
  for(j in 1:nvar)

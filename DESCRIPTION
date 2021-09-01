@@ -6,9 +6,8 @@ Date:  2021-8-10
 Depends:  R (>= 3.4.0),vegan,ggplot2
 Author: Jiangshan Lai,Pedro Peres-Neto
 Maintainer: Jiangshan Lai <lai@ibcas.ac.cn>
-Description: This function conducts variation partitioning and hierarchical partitioning to calculate the unique, shared (referred as to "common") and individual contributions of each predictor (or matrix) to explained variation (R-squared and adjusted R-squared) on canonical analysis (RDA,CCA and db-RDA), applying the algorithm of Lai J.,Zou Y., Zhang J.,Peres-Neto P.(2021).rdacca.hp: an R package for generalizing hierarchical and variation partitioning in multiple regression and canonical analysis.bioRxiv 2021.03.09.434308 <DOI:10.1101/2021.03.09.434308>. 
+Description: This function conducts variation partitioning and hierarchical partitioning to calculate the unique, shared (referred as to "common") and individual contributions of each predictor (or matrix) towards explained variation (R-square and adjusted R-square) on canonical analysis (RDA,CCA and db-RDA), applying the algorithm of Chevan, A. and Sutherland, M. 1991 Hierarchical Partitioning.The American Statistician, 90-96 <doi:10.1080/00031305.1991.10475776>. 
 License: GPL
 URL: https://github.com/laijiangshan/rdacca.hp
 Encoding: UTF-8
-LazyData: true
 RoxygenNote: 7.1.1
