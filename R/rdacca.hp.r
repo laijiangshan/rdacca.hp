@@ -75,7 +75,6 @@ if(is.data.frame(iv))
   }
 
 
-
   if(method=="RDA"||method=="rda")                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
   {dv<-scale(dv,scale=scale)}
 
@@ -94,26 +93,21 @@ if(is.data.frame(iv))
 
   commonM <- matrix(nrow = totalN, ncol = 3)
   for (i in 1:totalN) {
-    tmp <- iv[as.logical(binarymx[, i])]
-    tmp.design <- as.matrix(stats::model.matrix(~ ., tmp))
-    tmp.design.ct <- as.matrix(data.frame(scale(tmp.design,scale=FALSE))[-1])
-    
+    tmp.design.ct <- iv[as.logical(binarymx[, i])]
+
     if(method=="RDA"||method=="rda")
-    {gfa <- rdar2(dv,tmp.design.ct)
-    if(type=="R2")commonM[i, 2] <- gfa$Rsquare
-    if(type=="adjR2")commonM[i, 2] <- gfa$RsquareAdj
+    {
+	gfa <- vegan::RsquareAdj(vegan::rda(dv~.,tmp.design.ct))
     }
 	if(method=="CCA"||method=="cca")
-    {gfa <- vegan::RsquareAdj(vegan::cca(dv~.,data=data.frame(tmp.design.ct)),permutations = n.perm)
-    if(type=="R2")commonM[i, 2] <- gfa$r.squared
-    if(type=="adjR2")commonM[i, 2] <- gfa$adj.r.squared
+    {gfa <- vegan::RsquareAdj(vegan::cca(dv~.,tmp.design.ct,permutations = n.perm))
     }
 	if(method=="dbRDA"||method=="dbrda"||method=="DBRDA")
     {
-	gfa <- vegan::RsquareAdj(vegan::dbrda(dv~.,data=data.frame(tmp.design.ct),add=add,sqrt.dist = sqrt.dist))
-	if(type=="R2")commonM[i, 2] <- gfa$r.squared
-    if(type=="adjR2")commonM[i, 2] <- gfa$adj.r.squared
-    }	
+	gfa <- vegan::RsquareAdj(vegan::dbrda(dv~.,tmp.design.ct,add=add,sqrt.dist = sqrt.dist))
+   }	
+   if(type=="R2")commonM[i, 2] <- gfa$r.squared
+   if(type=="adjR2")commonM[i, 2] <- gfa$adj.r.squared	
   }
 
   commonlist <- vector("list", totalN)
@@ -260,11 +254,6 @@ else
 
   if(method=="RDA"||method=="rda")
   {dv<-scale(dv,scale=scale)}
-	
-	
-	#method <- "RDA"
-	#if(CCA){method="CCA"}
-	#if(inherits(dv, "dist")){method="dbRDA"}
 		
     ilist <- names(iv)
 	if(is.null(ilist))
@@ -287,10 +276,7 @@ else
     }
 
    totalN  <-  2^nvar - 1
-    #binarymx <- matrix(0, nvar, totalN)
-    #for (i in 1:totalN) {
-    #    binarymx <- creatbin(i, binarymx)
-    # }
+
 
   commonM <- matrix(nrow = totalN, ncol = 3)
   binarymx <- matrix(0, nvar, totalN)
@@ -305,54 +291,41 @@ else
 		N <- length(ivls)
 		if(N==1)
 		{
-		tmp <- ivls[[1]]
-		tmp.design <- as.matrix(model.matrix(~ ., tmp))
-        tmp.design.ct <- as.matrix(data.frame(scale(tmp.design,scale=FALSE))[-1])
+		tmp.design.ct <- ivls[[1]]
 	if(method=="RDA"||method=="rda")
-    {gfa <- rdar2(dv,tmp.design.ct)
-    if(type=="R2")commonM[i, 2] <- gfa$Rsquare
-    if(type=="adjR2")commonM[i, 2] <- gfa$RsquareAdj
+    {
+	gfa <- vegan::RsquareAdj(vegan::rda(dv~.,tmp.design.ct))
     }
 	if(method=="CCA"||method=="cca")
-    {gfa <- vegan::RsquareAdj(vegan::cca(dv~.,data=data.frame(tmp.design.ct)),permutations = n.perm)
-    if(type=="R2")commonM[i, 2] <- gfa$r.squared
-    if(type=="adjR2")commonM[i, 2] <- gfa$adj.r.squared
+    {gfa <- vegan::RsquareAdj(vegan::cca(dv~.,tmp.design.ct,permutations = n.perm))
     }
-
 	if(method=="dbRDA"||method=="dbrda"||method=="DBRDA")
     {
-	gfa <- vegan::RsquareAdj(vegan::dbrda(dv~.,data=data.frame(tmp.design.ct),add=add,sqrt.dist = sqrt.dist))
-	if(type=="R2")commonM[i, 2] <- gfa$r.squared
-    if(type=="adjR2")commonM[i, 2] <- gfa$adj.r.squared
-    }	
+	gfa <- vegan::RsquareAdj(vegan::dbrda(dv~.,tmp.design.ct,add=add,sqrt.dist = sqrt.dist))
+   }	
+   if(type=="R2")commonM[i, 2] <- gfa$r.squared
+   if(type=="adjR2")commonM[i, 2] <- gfa$adj.r.squared	
   }
   
-		#commonM[i, 2] <-Canonical.Rsq(as.matrix(dv),tmp.design.ct,method=method)$adj}
 		if(N>1)
 		{inv <- ivls[[1]]
    for(k in 2:N)
-  {inv <- cbind(inv,ivls[[k]])}
-		tmp.design <- as.matrix(model.matrix(~ ., inv))
-        tmp.design.ct <- as.matrix(data.frame(scale(tmp.design,scale=FALSE))[-1])
-	if(method=="RDA"||method=="rda")
-    {gfa <- rdar2(dv,tmp.design.ct)
-    if(type=="R2")commonM[i, 2] <- gfa$Rsquare
-    if(type=="adjR2")commonM[i, 2] <- gfa$RsquareAdj
-    }	
+  {tmp.design.ct <- cbind(inv,ivls[[k]])}
 
-	if(method=="CCA"||method=="cca")
-    {gfa <- vegan::RsquareAdj(vegan::cca(dv~.,data=data.frame(tmp.design.ct)),permutations = n.perm)
-    if(type=="R2")commonM[i, 2] <- gfa$r.squared
-    if(type=="adjR2")commonM[i, 2] <- gfa$adj.r.squared
-    }
-   if(method=="dbRDA"||method=="dbrda"||method=="DBRDA")
+	if(method=="RDA"||method=="rda")
     {
-	gfa <- vegan::RsquareAdj(vegan::dbrda(dv~.,data=data.frame(tmp.design.ct),add=add,sqrt.dist = sqrt.dist))
-	if(type=="R2")commonM[i, 2] <- gfa$r.squared
-    if(type=="adjR2")commonM[i, 2] <- gfa$adj.r.squared
-    }		
-	#commonM[i, 2] <-Canonical.Rsq(as.matrix(dv),tmp.design.ct,method=method)$adj}		
-	}
+	gfa <- vegan::RsquareAdj(vegan::rda(dv~.,tmp.design.ct))
+    }
+	if(method=="CCA"||method=="cca")
+    {gfa <- vegan::RsquareAdj(vegan::cca(dv~.,tmp.design.ct,permutations = n.perm))
+    }
+	if(method=="dbRDA"||method=="dbrda"||method=="DBRDA")
+    {
+	gfa <- vegan::RsquareAdj(vegan::dbrda(dv~.,tmp.design.ct,add=add,sqrt.dist = sqrt.dist))
+   }	
+   if(type=="R2")commonM[i, 2] <- gfa$r.squared
+   if(type=="adjR2")commonM[i, 2] <- gfa$adj.r.squared	
+  }
     }
     commonalityList <- vector("list", totalN)
 	
@@ -446,17 +419,7 @@ else
     colNames <- format.default(c("Fractions", " % Total"), 
         justify = "right")
     dimnames(outputcommonM) <- list(rowNames, colNames)
-  
-   # outputCCbyVar <- matrix(nrow = nvar, ncol = 3)
-    #for (i in 1:nvar) {
-   #     outputCCbyVar[i, 1]  <-  outputcommonM[i, 1]
-    #    outputCCbyVar[i, 3]  <-  round(sum(binarymx[i, ] * (commonM[, 
-    #        3])), digits = 4)
-    #    outputCCbyVar[i, 2]  <- outputCCbyVar[i, 3] - outputCCbyVar[i, 1]
-   # }
-    #dimnames(outputCCbyVar) <- list(ivlist, c("Unique", "Common", "Total"))
-	
-   # outputList <- list(Method=paste("Partition of variance in ",method,sep=""),Partition = outputcommonM, CCTotalbyVar = outputCCbyVar)
+
 
   VariableImportance <- matrix(nrow = nvar, ncol = 4)
   for (i in 1:nvar) {
