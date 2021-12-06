@@ -1,27 +1,27 @@
 #' Hierarchical and Variation Partitioning for Canonical Analysis Without Limiting the Number of Predictors (Matrices)
 
-#' @param  dv  Response variable, either a numeric vector or a matrix. If method="dbRDA", dv should be a "dist" matrix.
-#' @param  iv Predictors (explanatory variable), either a data frame or a list of data frames. If it is a data frame, the relative importance of each column of the data frame will be evaluated; if it is a list, the relative importance of each element (matrix) will be evaluated.
-#' @param  method Type of canonical analysis used for variation partitioning, should be a character string, either "RDA", "dbRDA" or "CCA", the default is "RDA". If the response variable (dv) is a numerical vector and method="RDA", the hierarchical and variation partitioning for the classical multiple regression is implemented.
+#' @param  dv  Response variable, either a numeric vector, matrix or data frame. If method="dbRDA", dv should be of class "dist".
+#' @param  iv Predictorsrepresented in either a data frame or a list of data frames. If it is a data frame, the relative importance of each column of the data frame will be evaluated; if it is a list, the relative importance of each element (matrix) will be evaluated.
+#' @param  method Type of canonical analysis to be performed, should be a character string, either "RDA", "dbRDA" or "CCA", the default is "RDA". If the response variable (dv) is a numerical vector and method="RDA", the hierarchical and variation partitioning for the classical multiple regression is implemented.If response variable (dv) is of class "dist", "dbRDA" will be chosen automatically.
 #' @param  type The type of total explained variation, either "R2" or "adjR2", in which "R2" is unadjusted R-square and "adjR2" is adjusted R-square, the default is "adjR2". The adjusted R-square is calculated using Ezekiel's formula (Ezekiel 1930) for RDA and dbRDA, while permutation procedure is used for CCA (Peres-Neto et al. 2006). 
 #' @param  scale Logical; If the columns of dv should be standardized to unit variance when method="RDA" is applied.
-#' @param  add Logical; If a constant should be added to the non-diagonal values to euclidify dissimilarities (see dbrda function in vegan for details). Choice "lingoes" (or TRUE) uses the recommended method of Legendre & Anderson (1999: "method 1") and "cailliez" uses their "method 2". The argument has an effect only when method="dbRDA".
-#' @param  sqrt.dist Logical, If the square root of dissimilarities should be taken. This often euclidifies dissimilarities. The argument has an effect only when method="dbRDA"(see dbrda function in vegan for details).
-#' @param  n.perm An integer; Number of permutations for computing the adjusted R-square for CCA. The argument has an effect only when method="CCA".
-#' @param  var.part Logical; If TRUE, the result of variation partitioning (2^N-1 fractions for N predictors or matrices) are shown, the default is FALSE.
+#' @param  add Logical; Specifies whether a constant should be added to the non-diagonal values to euclidify dissimilarities (see dbrda function in vegan for details). Choice "lingoes" (or TRUE) uses the recommended method of Legendre & Anderson (1999: "method 1") and "cailliez" uses their "method 2". The argument has an effect only when method="dbRDA".
+#' @param  sqrt.dist Logical, Specifies whether the square root of dissimilarities should be taken. This often euclidifies dissimilarities. The argument has an effect only when method="dbRDA"(see dbrda function in vegan for details).
+#' @param  n.perm Integer; Number of permutations for computing the adjusted R-square for CCA. The argument has an effect only when method="CCA".
+#' @param  var.part Logical; If TRUE, the result of variation partitioning (2^N-1 fractions for N predictors or matrices) is shown, the default is FALSE.
 
 #' @details This function conducts variation partitioning and hierarchical partitioning to calculate the unique, average shared (referred as to "common") and individual contributions of each predictor (or matrix) towards explained variation (R-square) on canonical analysis (RDA,CCA and dbRDA).
 #' Variation partitioning should be conducted before hierarchical partitioning. The former emphasizes unique and common variation among predictors, the latter emphasizes the overall importance of each predictor (or group of predictors). This function simultaneously implements variation and hierarchical partitioning for single- and multiple-response models without limiting in the number of predictors / matrices of predictors. 
-#' This package was inspired by Chevan & Sutherland (1991)’s paper, the "yhat" (Nimon, Oswald & Roberts 2013) and "hier.part"(Walsh & Mac Nally 2013) R packages. 
 
 #' @return a list containing
-#' @return \item{Method_Type}{Type of canonical analysis and the type of total explained variation.}
-#' @return \item{Total_explained_variation}{The explained variation for the full model.}
+#' @return \item{Method_Type}{The type of canonical analysis and whether the raw or adjusted R2 waswere used in the analysis.}
+#' @return \item{Total_explained_variation}{The explained variation for the full model (raw or adjusted R2).}
 #' @return \item{Var.part}{If var.part=TRUE, a matrix containing the value and percentage of all commonality (2^N-1 for N predictors or matrices).}
-#' @return \item{Hier.part}{A matrix containing unique, average shared, individual effects and percentage of individual effect towards total explained variation for each predictor or matrix.}
+#' @return \item{Hier.part}{A matrix containing unique, average shared, individual effects and percentage of individual effects towards total explained variation for each predictor or matrix.}
 
 #' @author {Jiangshan Lai} \email{lai@ibcas.ac.cn}
 #' @author {Pedro Peres-Neto} \email{pedro.peres-neto@concordia.ca}
+#' @author {Kim Nimon} \email{kim.nimon@gmail.com}
 
 #' @references
 #' \itemize{
@@ -217,7 +217,7 @@ if(is.data.frame(iv))
   VariableImportance[,1] <- outputcommonM[1:nvar,1]
   VariableImportance[,2] <- VariableImportance[,3]-VariableImportance[,1]
   
-  total=round(sum(VariableImportance[,3]),digits = 4)
+  total=round(sum(VariableImportance[,3]),digits = 3)
   VariableImportance[, 4] <- round(100*VariableImportance[, 3]/total,2)
 
   dimnames(VariableImportance) <- list(iv.name, c("Unique","Average.share","Individual","I.perc(%)"))
@@ -278,7 +278,7 @@ else
    totalN  <-  2^nvar - 1
 
 
-  commonM <- matrix(nrow = totalN, ncol = 3)
+
   binarymx <- matrix(0, nvar, totalN)
   for (i in 1:totalN) {
     binarymx <- creatbin(i, binarymx)
@@ -308,9 +308,9 @@ else
   }
   
 		if(N>1)
-		{inv <- ivls[[1]]
+		{tmp.design.ct <- ivls[[1]]
    for(k in 2:N)
-  {tmp.design.ct <- cbind(inv,ivls[[k]])}
+  {tmp.design.ct <- cbind(tmp.design.ct,ivls[[k]])}
 
 	if(method=="RDA"||method=="rda")
     {
@@ -429,7 +429,7 @@ else
   VariableImportance[,1] <- outputcommonM[1:nvar,1]
   VariableImportance[,2] <- VariableImportance[,3]-VariableImportance[,1]
   
-  total=round(sum(VariableImportance[,3]),digits = 4)
+  total=round(sum(VariableImportance[,3]),digits = 3)
   VariableImportance[, 4] <- round(100*VariableImportance[, 3]/total,2)
 
   dimnames(VariableImportance) <- list(iv.name, c("Unique","Average.share","Individual","I.perc(%)"))

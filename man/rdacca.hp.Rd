@@ -17,42 +17,41 @@ rdacca.hp(
 )
 }
 \arguments{
-\item{dv}{Response variable, either a numeric vector or a matrix. If method="dbRDA", dv should be a "dist" matrix.}
+\item{dv}{Response variable, either a numeric vector, matrix or data frame. If method="dbRDA", dv should be of class "dist".}
 
-\item{iv}{Predictors (explanatory variable), either a data frame or a list of data frames. If it is a data frame, the relative importance of each column of the data frame will be evaluated; if it is a list, the relative importance of each element (matrix) will be evaluated.}
+\item{iv}{Predictorsrepresented in either a data frame or a list of data frames. If it is a data frame, the relative importance of each column of the data frame will be evaluated; if it is a list, the relative importance of each element (matrix) will be evaluated.}
 
-\item{method}{Type of canonical analysis used for variation partitioning, should be a character string, either "RDA", "dbRDA" or "CCA", the default is "RDA". If the response variable (dv) is a numerical vector and method="RDA", the hierarchical and variation partitioning for the classical multiple regression is implemented.}
+\item{method}{Type of canonical analysis to be performed, should be a character string, either "RDA", "dbRDA" or "CCA", the default is "RDA". If the response variable (dv) is a numerical vector and method="RDA", the hierarchical and variation partitioning for the classical multiple regression is implemented.If response variable (dv) is of class "dist", "dbRDA" will be chosen automatically.}
 
 \item{type}{The type of total explained variation, either "R2" or "adjR2", in which "R2" is unadjusted R-square and "adjR2" is adjusted R-square, the default is "adjR2". The adjusted R-square is calculated using Ezekiel's formula (Ezekiel 1930) for RDA and dbRDA, while permutation procedure is used for CCA (Peres-Neto et al. 2006).}
 
 \item{scale}{Logical; If the columns of dv should be standardized to unit variance when method="RDA" is applied.}
 
-\item{add}{Logical; If a constant should be added to the non-diagonal values to euclidify dissimilarities (see dbrda function in vegan for details). Choice "lingoes" (or TRUE) uses the recommended method of Legendre & Anderson (1999: "method 1") and "cailliez" uses their "method 2". The argument has an effect only when method="dbRDA".}
+\item{add}{Logical; Specifies whether a constant should be added to the non-diagonal values to euclidify dissimilarities (see dbrda function in vegan for details). Choice "lingoes" (or TRUE) uses the recommended method of Legendre & Anderson (1999: "method 1") and "cailliez" uses their "method 2". The argument has an effect only when method="dbRDA".}
 
-\item{sqrt.dist}{Logical, If the square root of dissimilarities should be taken. This often euclidifies dissimilarities. The argument has an effect only when method="dbRDA"(see dbrda function in vegan for details).}
+\item{sqrt.dist}{Logical, Specifies whether the square root of dissimilarities should be taken. This often euclidifies dissimilarities. The argument has an effect only when method="dbRDA"(see dbrda function in vegan for details).}
 
-\item{n.perm}{An integer; Number of permutations for computing the adjusted R-square for CCA. The argument has an effect only when method="CCA".}
+\item{n.perm}{Integer; Number of permutations for computing the adjusted R-square for CCA. The argument has an effect only when method="CCA".}
 
-\item{var.part}{Logical; If TRUE, the result of variation partitioning (2^N-1 fractions for N predictors or matrices) are shown, the default is FALSE.}
+\item{var.part}{Logical; If TRUE, the result of variation partitioning (2^N-1 fractions for N predictors or matrices) is shown, the default is FALSE.}
 }
 \value{
 a list containing
 
-\item{Method_Type}{Type of canonical analysis and the type of total explained variation.}
+\item{Method_Type}{The type of canonical analysis and whether the raw or adjusted R2 waswere used in the analysis.}
 
-\item{Total_explained_variation}{The explained variation for the full model.}
+\item{Total_explained_variation}{The explained variation for the full model (raw or adjusted R2).}
 
 \item{Var.part}{If var.part=TRUE, a matrix containing the value and percentage of all commonality (2^N-1 for N predictors or matrices).}
 
-\item{Hier.part}{A matrix containing unique, average shared, individual effects and percentage of individual effect towards total explained variation for each predictor or matrix.}
+\item{Hier.part}{A matrix containing unique, average shared, individual effects and percentage of individual effects towards total explained variation for each predictor or matrix.}
 }
 \description{
 Hierarchical and Variation Partitioning for Canonical Analysis Without Limiting the Number of Predictors (Matrices)
 }
 \details{
 This function conducts variation partitioning and hierarchical partitioning to calculate the unique, average shared (referred as to "common") and individual contributions of each predictor (or matrix) towards explained variation (R-square) on canonical analysis (RDA,CCA and dbRDA).
-Variation partitioning should be conducted before hierarchical partitioning. The former emphasizes unique and common variation among predictors, the latter emphasizes the overall importance of each predictor (or group of predictors). This function simultaneously implements variation and hierarchical partitioning for single- and multiple-response models without limiting in the number of predictors / matrices of predictors. 
-This package was inspired by Chevan & Sutherland (1991)’s paper, the "yhat" (Nimon, Oswald & Roberts 2013) and "hier.part"(Walsh & Mac Nally 2013) R packages.
+Variation partitioning should be conducted before hierarchical partitioning. The former emphasizes unique and common variation among predictors, the latter emphasizes the overall importance of each predictor (or group of predictors). This function simultaneously implements variation and hierarchical partitioning for single- and multiple-response models without limiting in the number of predictors / matrices of predictors.
 }
 \examples{
 library(vegan)
@@ -85,4 +84,6 @@ rdacca.hp(mite,iv,method="CCA",var.part = TRUE)
 {Jiangshan Lai} \email{lai@ibcas.ac.cn}
 
 {Pedro Peres-Neto} \email{pedro.peres-neto@concordia.ca}
+
+{Kim Nimon} \email{kim.nimon@gmail.com}
 }

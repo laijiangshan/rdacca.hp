@@ -1,10 +1,10 @@
 Package: rdacca.hp
 Type: Package
 Title: Hierarchical and Variation Partitioning for Canonical Analysis
-Version: 1.0-3
-Date:  2021-9-14
+Version: 1.0-4
+Date:  2021-12-4
 Depends:  R (>= 3.4.0),vegan,ggplot2
-Author: Jiangshan Lai,Pedro Peres-Neto
+Author: Jiangshan Lai,Pedro Peres-Neto,Kim Nimon
 Maintainer: Jiangshan Lai <lai@ibcas.ac.cn>
 Description: This function conducts variation partitioning and hierarchical partitioning to calculate the unique, shared (referred as to "common") and individual contributions of each predictor (or matrix) towards explained variation (R-square and adjusted R-square) on canonical analysis (RDA,CCA and db-RDA), applying the algorithm of Chevan, A. and Sutherland, M. 1991 Hierarchical Partitioning.The American Statistician, 90-96 <doi:10.1080/00031305.1991.10475776>. 
 License: GPL
