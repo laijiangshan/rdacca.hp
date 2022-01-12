@@ -1,19 +1,19 @@
 citHeader("To cite rdacca.hp in publications use:")
 
 citEntry(entry = "Article",
-         title        = "rdacca.hp: an R package for generalizing hierarchical and variation partitioning in multiple regression and canonical analysis.",
+         title        = "Generalizing hierarchical and variation partitioning in multiple regression and canonical analysis using the rdacca.hp R package.",
          author       = personList(as.person("Jiangshan Lai"),
                                    as.person("Yi Zou"),
 								   as.person("Jinlong Zhang"),
 								   as.person("Pedro Peres-Neto")),
-         journal      = "bioRxiv",
-		  volume       = "2021.03.09.434308",
-         year         = "2021",
-         url          = "https://www.biorxiv.org/content/10.1101/2021.03.09.434308v1",
+         journal      = "Methods in Ecology and Evolution",
+		  volume       = "DOI: 10.1111/2041-210X.13800",
+         year         = "2022",
+         url          = "https://besjournals.onlinelibrary.wiley.com/doi/10.1111/2041-210X.13800",
 
          textVersion  =
            paste("Jiangshan Lai, Yi Zou, Jinlong Zhang, Pedro Peres-Neto (2021).",
-                 "rdacca.hp: an R package for generalizing hierarchical and variation partitioning in multiple regression and canonical analysis.",
-                 "bioRxiv.2021.03.09.434308",
-                 "URL https://www.biorxiv.org/content/10.1101/2021.03.09.434308v1")
+                 "Generalizing hierarchical and variation partitioning in multiple regression and canonical analysis using the rdacca.hp R package.",
+                 "Methods in Ecology and Evolution DOI: 10.1111/2041-210X.13800",
+                 "URL https://besjournals.onlinelibrary.wiley.com/doi/10.1111/2041-210X.13800")
 )
