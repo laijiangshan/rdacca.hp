@@ -60,7 +60,7 @@ for(i in 1:permutations-1)
  newiv <- list()
  for(j in 1:nvar)
  {
- newiv[[j]] <- iv[[j]][perms,]
+ newiv[[j]] <- data.frame(iv[[j]][perms, ])
  row.names(newiv[[j]]) <- 1:n 
 }
  names(newiv) <- names(iv)
