@@ -50,7 +50,7 @@ data(mite)
 data(mite.env)
 #Hellinger-transform the species dataset for RDA
 mite.hel <- decostand(mite, "hellinger")
-permu.hp(mite.hel,mite.env,method="RDA",type="adjR2",permutations=9)
+permu.hp(mite.hel,mite.env,method="RDA",type="adjR2",permutations=10)
 }
 \author{
 {Jiangshan Lai} \email{lai@ibcas.ac.cn}

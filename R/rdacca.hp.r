@@ -104,7 +104,7 @@ if(is.data.frame(iv))
     }
 	if(method=="dbRDA"||method=="dbrda"||method=="DBRDA")
     {
-	gfa <- vegan::RsquareAdj(vegan::dbrda(dv~.,tmp.design.ct,add=add,sqrt.dist = sqrt.dist))
+	gfa <- vegan::RsquareAdj(vegan::capscale(dv~.,tmp.design.ct,add=add,sqrt.dist = sqrt.dist))
    }	
    if(type=="R2")commonM[i, 2] <- gfa$r.squared
    if(type=="adjR2")commonM[i, 2] <- gfa$adj.r.squared	
@@ -321,7 +321,7 @@ else
     }
 	if(method=="dbRDA"||method=="dbrda"||method=="DBRDA")
     {
-	gfa <- vegan::RsquareAdj(vegan::dbrda(dv~.,tmp.design.ct,add=add,sqrt.dist = sqrt.dist))
+	gfa <- vegan::RsquareAdj(vegan::capscale(dv~.,tmp.design.ct,add=add,sqrt.dist = sqrt.dist))
    }	
    if(type=="R2")commonM[i, 2] <- gfa$r.squared
    if(type=="adjR2")commonM[i, 2] <- gfa$adj.r.squared	
