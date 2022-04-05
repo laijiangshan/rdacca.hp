@@ -1,12 +1,12 @@
 Package: rdacca.hp
 Type: Package
 Title: Hierarchical and Variation Partitioning for Canonical Analysis
-Version: 1.0-7
-Date:  2022-1-30
+Version: 1.0-8
+Date:  2022-4-5
 Depends:  R (>= 3.4.0),vegan,ggplot2
 Author: Jiangshan Lai,Pedro Peres-Neto,Kim Nimon
 Maintainer: Jiangshan Lai <lai@ibcas.ac.cn>
-Description: This function conducts variation partitioning and hierarchical partitioning to calculate the unique, shared (referred as to "common") and individual contributions of each predictor (or matrix) towards explained variation (R-square and adjusted R-square) on canonical analysis (RDA,CCA and db-RDA), applying the algorithm of Lai J.,Zou Y., Zhang J.,Peres-Neto P.(2022) Generalizing hierarchical and variation partitioning in multiple regression and canonical analyses using the rdacca.hp R package.Methods in Ecology and Evolution,<DOI:10.1111/2041-210X.13800>. 
+Description: This function conducts variation partitioning and hierarchical partitioning to calculate the unique, shared (referred as to "common") and individual contributions of each predictor (or matrix) towards explained variation (R-square and adjusted R-square) on canonical analysis (RDA,CCA and db-RDA), applying the algorithm of Lai J.,Zou Y., Zhang J.,Peres-Neto P.(2022) Generalizing hierarchical and variation partitioning in multiple regression and canonical analyses using the rdacca.hp R package.Methods in Ecology and Evolution,13: 782-788 <DOI:10.1111/2041-210X.13800>. 
 License: GPL
 URL: https://github.com/laijiangshan/rdacca.hp
 Encoding: UTF-8

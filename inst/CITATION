@@ -7,13 +7,13 @@ citEntry(entry = "Article",
 								   as.person("Jinlong Zhang"),
 								   as.person("Pedro Peres-Neto")),
          journal      = "Methods in Ecology and Evolution",
-		  volume       = "DOI: 10.1111/2041-210X.13800",
+		  volume       = "13(4):782-788",
          year         = "2022",
          url          = "https://besjournals.onlinelibrary.wiley.com/doi/10.1111/2041-210X.13800",
 
          textVersion  =
            paste("Jiangshan Lai, Yi Zou, Jinlong Zhang, Pedro Peres-Neto (2022).",
                  "Generalizing hierarchical and variation partitioning in multiple regression and canonical analysis using the rdacca.hp R package.",
-                 "Methods in Ecology and Evolution DOI: 10.1111/2041-210X.13800",
+                 "Methods in Ecology and Evolution,13(4):782-788",
                  "URL https://besjournals.onlinelibrary.wiley.com/doi/10.1111/2041-210X.13800")
 )

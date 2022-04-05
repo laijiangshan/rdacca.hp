@@ -71,7 +71,7 @@ rdacca.hp(mite,iv,method="CCA",var.part = TRUE)
 }
 \references{
 \itemize{
-\item Lai J.,Zou Y., Zhang J.,Peres-Neto P.(2022) Generalizing hierarchical and variation partitioning in multiple regression and canonical analyses using the rdacca.hp R package.Methods in Ecology and Evolution,<DOI:10.1111/2041-210X.13800>
+\item Lai J.,Zou Y., Zhang J.,Peres-Neto P.(2022) Generalizing hierarchical and variation partitioning in multiple regression and canonical analyses using the rdacca.hp R package.Methods in Ecology and Evolution,13,782-788<DOI:10.1111/2041-210X.13800>
 \item Chevan, A. & Sutherland, M. (1991). Hierarchical partitioning. American Statistician, 45, 90-96. doi:10.1080/00031305.1991.10475776
 \item Nimon, K., Oswald, F.L. & Roberts, J.K. (2013). Yhat: Interpreting regression effects. R package version 2.0.0.
 \item Legendre, P. & Anderson, M. J. (1999). Distance-based redundancy analysis: testing multispecies responses in multifactorial ecological experiments. Ecological Monographs, 69, 1–24.<DOI:10.1890/0012-9615(1999)069[0001:dbratm]2.0.co;2>
