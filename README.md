@@ -11,5 +11,5 @@ install_github('laijiangshan/rdacca.hp',build_vignettes = TRUE)
 The article describing the package is officially published on Methods in Ecology and Evolution.
 https://besjournals.onlinelibrary.wiley.com/doi/epdf/10.1111/2041-210X.13800
 
-Please feel free to send an email to the package maintainer Dr. Jiangshan Lai (lai@ibcas.ac.cn) if you have any question or comments about this package.
+Please feel free to send an email to the package maintainer Dr. Jiangshan Lai (lai@bjfu.edu.cn) if you have any question or comments about this package.
 
