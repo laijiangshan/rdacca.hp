@@ -35,6 +35,7 @@ r2q <- obs$Hier.part[,3]
 
 if(is.data.frame(iv))
 {
+iv <- data.frame(iv)
 n <- dim(iv)[1]
 nvar <- dim(iv)[2]
 for(i in 1:permutations-1)

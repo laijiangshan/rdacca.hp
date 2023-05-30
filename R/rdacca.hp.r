@@ -56,9 +56,9 @@
 rdacca.hp <- function (dv,iv,method=c("RDA","dbRDA","CCA"),type=c("adjR2","R2"),scale=FALSE,add = FALSE, sqrt.dist = FALSE,n.perm=1000,var.part = FALSE) 
 {
 
-if(is.data.frame(iv))
-{
-  if(sum(is.na(dv))>=1|sum(is.na(iv))>=1)
+if(is.data.frame(iv)||is.matrix(iv))
+{iv <-as.data.frame(iv)
+  if(sum(is.na(dv))>=1||sum(is.na(iv))>=1)
   {stop("NA/NaN/Inf is not allowed in this analysis")}
   if(nrow(iv)<=ncol(iv))
   {stop("sample size (row) is less than the number of predictors")}
@@ -68,22 +68,18 @@ if(is.data.frame(iv))
   type <- type[1]
   if(inherits(dv, "dist"))
   {method <- "dbRDA"}
-  if(method=="dbRDA"||method=="dbrda"||method=="DBRDA")
-  {
-    if(!inherits(dv, "dist"))
-      return("response variables should be a 'dist' matrix for dbRDA")
+  if (method %in% c("dbRDA", "dbrda", "DBRDA") && !inherits(dv, "dist"))
+  {stop("response variables should be a 'dist' matrix for dbRDA")
   }
 
 
-  if(method=="RDA"||method=="rda")                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
-  {dv<-scale(dv,scale=scale)}
-
-  iv <- data.frame(iv)
+ if (method %in% c("RDA", "rda")) dv <- scale(dv, scale=scale)
+ 
+  iv <- as.data.frame(iv)
   ivname <- colnames(iv)
   iv.name <- ivname
   nvar <- dim(iv)[2]
-  if (nvar < 2)
-    stop("Analysis not conducted. Insufficient number of predictors.")
+  if (nvar < 2)stop("Analysis not conducted. Insufficient number of predictors.")
 
   totalN <- 2^nvar - 1
   binarymx <- matrix(0, nvar, totalN)
