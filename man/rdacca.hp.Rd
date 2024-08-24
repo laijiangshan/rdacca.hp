@@ -2,88 +2,59 @@
 % Please edit documentation in R/rdacca.hp.r
 \name{rdacca.hp}
 \alias{rdacca.hp}
-\title{Hierarchical and Variation Partitioning for Canonical Analysis Without Limiting the Number of Predictors (Matrices)}
+\title{Hierarchical Partitioning for Canonical Analysis}
 \usage{
 rdacca.hp(
   dv,
   iv,
   method = c("RDA", "dbRDA", "CCA"),
   type = c("adjR2", "R2"),
-  scale = FALSE,
-  add = FALSE,
-  sqrt.dist = FALSE,
-  n.perm = 1000,
-  var.part = FALSE
+  trace = FALSE
 )
 }
 \arguments{
-\item{dv}{Response variable, either a numeric vector, matrix or data frame. If method="dbRDA", dv should be of class "dist".}
+\item{dv}{Response variables. if method="dbRDA", dv is the "dist" matrix.}
 
-\item{iv}{Predictorsrepresented in either a data frame or a list of data frames. If it is a data frame, the relative importance of each column of the data frame will be evaluated; if it is a list, the relative importance of each element (matrix) will be evaluated.}
+\item{iv}{Explanatory variables, typically of environmental variables.}
 
-\item{method}{Type of canonical analysis to be performed, should be a character string, either "RDA", "dbRDA" or "CCA", the default is "RDA". If the response variable (dv) is a numerical vector and method="RDA", the hierarchical and variation partitioning for the classical multiple regression is implemented.If response variable (dv) is of class "dist", "dbRDA" will be chosen automatically.}
+\item{method}{The type of canonical analysis: RDA, dbRDA or CCA, the default is "RDA".}
 
-\item{type}{The type of total explained variation, either "R2" or "adjR2", in which "R2" is unadjusted R-square and "adjR2" is adjusted R-square, the default is "adjR2". The adjusted R-square is calculated using Ezekiel's formula (Ezekiel 1930) for RDA and dbRDA, while permutation procedure is used for CCA (Peres-Neto et al. 2006).}
+\item{type}{The type of total explained variation: "adjR2" is adjusted R-squared and "R2" for unadjusted R-squared, the default is "adjR2".}
 
-\item{scale}{Logical; If the columns of dv should be standardized to unit variance when method="RDA" is applied.}
-
-\item{add}{Logical; Specifies whether a constant should be added to the non-diagonal values to euclidify dissimilarities (see dbrda function in vegan for details). Choice "lingoes" (or TRUE) uses the recommended method of Legendre & Anderson (1999: "method 1") and "cailliez" uses their "method 2". The argument has an effect only when method="dbRDA".}
-
-\item{sqrt.dist}{Logical, Specifies whether the square root of dissimilarities should be taken. This often euclidifies dissimilarities. The argument has an effect only when method="dbRDA"(see dbrda function in vegan for details).}
-
-\item{n.perm}{Integer; Number of permutations for computing the adjusted R-square for CCA. The argument has an effect only when method="CCA".}
-
-\item{var.part}{Logical; If TRUE, the result of variation partitioning (2^N-1 fractions for N predictors or matrices) is shown, the default is FALSE.}
+\item{trace}{logical value, if TRUE, the vaules of commonality (2^N-1for N explanatory variables) are outputed,the default is FALSE.}
 }
 \value{
 a list containing
 
-\item{Method_Type}{The type of canonical analysis and whether the raw or adjusted R2 waswere used in the analysis.}
+\item{Method_Type}{The type of canonical analysis and the type of total explained variation.}
 
-\item{Total_explained_variation}{The explained variation for the full model (raw or adjusted R2).}
+\item{R.squared}{Total explained variation.}
 
-\item{Var.part}{If var.part=TRUE, a matrix containing the value and percentage of all commonality (2^N-1 for N predictors or matrices).}
+\item{Commonality}{If trace=TRUE,a mtrix listing tha value and percentage of all commonality (2^N-1 for N explanatory variables).}
 
-\item{Hier.part}{A matrix containing unique, average shared, individual effects and percentage of individual effects towards total explained variation for each predictor or matrix.}
+\item{Var.part}{A matrix listing independent effect and its percentage to total explained variation for each explanatory variable.}
 }
 \description{
-Hierarchical and Variation Partitioning for Canonical Analysis Without Limiting the Number of Predictors (Matrices)
+Hierarchical Partitioning for Canonical Analysis
 }
 \details{
-This function conducts variation partitioning and hierarchical partitioning to calculate the unique, average shared (referred as to "common") and individual contributions of each predictor (or matrix) towards explained variation (R-square) on canonical analysis (RDA,CCA and dbRDA).
-Variation partitioning should be conducted before hierarchical partitioning. The former emphasizes unique and common variation among predictors, the latter emphasizes the overall importance of each predictor (or group of predictors). This function simultaneously implements variation and hierarchical partitioning for single- and multiple-response models without limiting in the number of predictors / matrices of predictors.
+This function calculates the independent contribution of each explanatory variable to explained variation (R-squared) on canonical analysis (RDA,CCA and dbRDA),
+applying the hierarchy algorithm of Chevan, A. and Sutherland, M. 1991 Hierarchical Partitioning.The American Statistician, 90--96. DOI: 10.1080/00031305.1991.10475776. 
+Under the idea of hierarchy algorithm, the shared R2 can be divided into equal components by number of involved variables, and then allocated equally to these variables as joint effects.
+The independent contribution of each explanatory variable is the sum of all its allocated common R2 and its unique R2. The order of importance of explanatory variables are determined by their independent contributions.
 }
 \examples{
 library(vegan)
 data(mite)
 data(mite.env)
-data(mite.xy)
-data(mite.pcnm)
-#Hellinger-transform the species dataset for RDA
+#Hellinger-transform the species dataset for RDA to deal with the "double zero" problem
 mite.hel <- decostand(mite, "hellinger")
 rdacca.hp(mite.hel,mite.env,method="RDA",type="adjR2")
 rdacca.hp(vegdist(mite),mite.env,method="dbRDA",type="adjR2")
 rdacca.hp(mite,mite.env,method="CCA",type="adjR2")
-iv <- list(env=mite.env,xy=mite.xy,pcnm=mite.pcnm)
-rdacca.hp(mite.hel,iv,method="RDA",var.part = TRUE)
-rdacca.hp(vegdist(mite),iv,method="dbRDA",var.part = TRUE)
-rdacca.hp(mite,iv,method="CCA",var.part = TRUE)
-}
-\references{
-\itemize{
-\item Lai J.,Zou Y., Zhang J.,Peres-Neto P.(2022) Generalizing hierarchical and variation partitioning in multiple regression and canonical analyses using the rdacca.hp R package.Methods in Ecology and Evolution,13,782-788<DOI:10.1111/2041-210X.13800>
-\item Chevan, A. & Sutherland, M. (1991). Hierarchical partitioning. American Statistician, 45, 90-96. doi:10.1080/00031305.1991.10475776
-\item Nimon, K., Oswald, F.L. & Roberts, J.K. (2013). Yhat: Interpreting regression effects. R package version 2.0.0.
-\item Legendre, P. & Anderson, M. J. (1999). Distance-based redundancy analysis: testing multispecies responses in multifactorial ecological experiments. Ecological Monographs, 69, 1–24.<DOI:10.1890/0012-9615(1999)069[0001:dbratm]2.0.co;2>
-\item Walsh, C.J. & Mac Nally, R. (2013) hier.part: Hierarchical Partitioning. R package version 1.0-4.
-\item Peres-Neto, P.R., Legendre, P., Dray, S. & Borcard, D. (2006) Variation partitioning of species data matrices: Estimation and comparison of fractions. Ecology, 87, 2614-2625.<DOI: doi.org/10.1890/0012-9658(2006)87[2614:VPOSDM]2.0.CO;2>
-\item Ezekiel, M. (1930) Methods of Correlational Analysis. Wiley, New York
-}
 }
 \author{
 {Jiangshan Lai} \email{lai@ibcas.ac.cn}
 
 {Pedro Peres-Neto} \email{pedro.peres-neto@concordia.ca}
-
-{Kim Nimon} \email{kim.nimon@gmail.com}
 }

@@ -2,14 +2,10 @@
 % Please edit documentation in R/creatbin.r
 \name{odd}
 \alias{odd}
-\title{Internal function for rdacca.hp() to determine whether the odd number}
+\title{Internal function for rdacca.hp()}
 \usage{
 odd(val)
 }
-\arguments{
-\item{val}{Imput number.}
-}
 \description{
-Internal function for rdacca.hp() to determine whether the odd number
+Internal function for rdacca.hp()
 }
-\keyword{internal}

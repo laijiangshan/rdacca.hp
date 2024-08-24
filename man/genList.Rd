@@ -6,12 +6,6 @@
 \usage{
 genList(ivlist, value)
 }
-\arguments{
-\item{ivlist}{The names of explanatory variable.}
-
-\item{value}{The sequence ID.}
-}
 \description{
 Internal function for rdacca.hp()
 }
-\keyword{internal}

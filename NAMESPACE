@@ -1,11 +1,11 @@
+
 ## Export regular function names (no dots)
 export(rdacca.hp)
-export(permu.hp)
-S3method(plot, rdaccahp)
 import(stats)
 import(vegan)
 import(ggplot2)
 exportPattern("^[[:alpha:]]+")
+S3method(plot, rdaccahp)
 importFrom(ggplot2,aes)
 importFrom(ggplot2,geom_text)
 importFrom(ggplot2,ggplot)
@@ -16,4 +16,3 @@ importFrom(ggplot2,theme_void)
 importFrom(ggplot2,geom_bar)
 importFrom(ggplot2,theme_minimal)
 importFrom(ggplot2,labs)
-

@@ -2,16 +2,10 @@
 % Please edit documentation in R/creatbin.r
 \name{creatbin}
 \alias{creatbin}
-\title{Internal function for rdacca.hp() to create diagonal matrix}
+\title{Internal function for rdacca.hp()}
 \usage{
 creatbin(col, binmatrix)
 }
-\arguments{
-\item{col}{Imput number.}
-
-\item{binmatrix}{Imput empty matrix.}
-}
 \description{
-Internal function for rdacca.hp() to create diagonal matrix
+Internal function for rdacca.hp()
 }
-\keyword{internal}

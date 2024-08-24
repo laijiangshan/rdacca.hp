@@ -2,38 +2,30 @@
 % Please edit documentation in R/plot.rdaccahp.r
 \name{plot.rdaccahp}
 \alias{plot.rdaccahp}
-\title{Plot for a \code{\link{rdacca.hp}} object}
+\title{plot output of rdacca.hp() based on ggplot2}
 \usage{
-\method{plot}{rdaccahp}(x, plot.perc = FALSE, color = NULL, ...)
+\method{plot}{rdaccahp}(outputList, plot.perc = FALSE)
 }
 \arguments{
-\item{x}{A \code{\link{rdacca.hp}} object.}
+\item{outputList}{the output of rdacca.hp().}
 
-\item{plot.perc}{Logical;if TRUE, the bar plot (based on ggplot2 package) of the percentage to individual effects of variables or groups towards total explained variation, the default is FALSE to show plot with original individual effects.}
-
-\item{color}{Color of variables.}
-
-\item{...}{unused}
-}
-\value{
-a ggplot object
+\item{plot.perc}{logical value, if TRUE, the bar plot (based on ggplot2) of the percentage ot independent effects of variables to total Rsquared, the default is FALSE to show plot with original independent effects.}
 }
 \description{
-Plot for a \code{\link{rdacca.hp}} object
+plot output of rdacca.hp() based on ggplot2
 }
 \examples{
 library(vegan)
 data(mite)
 data(mite.env)
+#Hellinger-transform the species dataset for RDA to deal with the "double zero" problem
 mite.hel <- decostand(mite, "hellinger")
-avc<-rdacca.hp(mite.hel,mite.env,method="RDA",type="adjR2")
-plot(avc)
-plot(avc, plot.perc=TRUE)
-avc<-rdacca.hp(mite.hel,mite.env[,1:3],method="RDA",type="adjR2",var.part=TRUE)
-plot(avc,color = c("#8DD3C7", "#FFFFB3", "#BEBADA"))
+rda.hp <- rdacca.hp(mite.hel,mite.env,method="RDA",type="adjR2")
+plot(rda.hp)
+plot(rda.hp,plot.perc=TRUE)
 }
 \author{
-{Jiangshan Lai} \email{lai@njfu.edu.cn}
+{Jiangshan Lai} \email{lai@ibcas.ac.cn}
 
-{Yao Liu} \email{liuyao@stu.xmu.edu.cn}
+{Pedro Peres-Neto} \email{pedro.peres-neto@concordia.ca}
 }

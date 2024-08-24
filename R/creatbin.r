@@ -1,7 +1,4 @@
-#'Internal function for rdacca.hp() to create diagonal matrix
-#' @param  col Imput number.
-#' @param  binmatrix Imput empty matrix.
-#' @keywords internal
+#'Internal function for rdacca.hp()
 creatbin <-
 function(col, binmatrix) {
 row<-1
@@ -13,14 +10,12 @@ val<-col
 	val<-as.integer(val/2)
 	row<-row+1
 }
+
 ##Return matrix
 return(binmatrix)
 }
 
-
-#'Internal function for rdacca.hp() to determine whether the odd number
-#' @param  val Imput number.
-#' @keywords internal
+#'Internal function for rdacca.hp()
 odd <- function (val) 
 {
     if (val%%2 == 0) 

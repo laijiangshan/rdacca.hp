@@ -2,15 +2,10 @@
 % Please edit documentation in R/GMI.r
 \name{GMI}
 \alias{GMI}
-\title{Internal function for rdacca.hp() to matrix inversion}
+\title{Internal function for rdacca.hp()}
 \usage{
 GMI(X, tol = 1e-06)
 }
-\arguments{
-\item{X}{A square matrix}
-
-\item{tol}{To judge eigenvalues greater than 0}
-}
 \description{
-Internal function for rdacca.hp() to matrix inversion
+Internal function for rdacca.hp()
 }
